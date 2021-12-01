@@ -3,15 +3,33 @@ using UnityEngine;
 public class CardBase : MonoBehaviour
 {
     protected string cardName;
+    protected int cardValue;
+    protected CardSuite cardSuite;
 
     protected CardAction[] playActions;
     protected CardAction[] drawActions;
     protected CardAction[] leaveActions;
 
 
+    private void Start()
+    {
+        
+    }
+
+    public virtual void Setup(CardStatsBase cardStats)
+    {
+        cardName = cardStats.name;
+        cardValue = cardStats.Value;
+        cardSuite = cardStats.suite;
+        playActions = cardStats.PlayActions;
+        drawActions = cardStats.DrawActions;
+        leaveActions = cardStats.LeaveActions;
+    }
+
     public void Play()
     {
         //TODO probably needs a destination slot to place it at
+        TryDoPlayActions();
     }
 
     public void Select()
@@ -21,7 +39,7 @@ public class CardBase : MonoBehaviour
 
     public void Remove()
     {
-
+        TryDoLeaveActions();
     }
 
     public void TryDoPlayActions()
@@ -47,10 +65,4 @@ public class CardBase : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        
-    }
-
-  
 }
