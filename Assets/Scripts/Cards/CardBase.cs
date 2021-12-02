@@ -1,7 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CardBase : MonoBehaviour
 {
+    public Vector3 SlotedPosition { get; set; }
+
+    public UnityEvent<CardBase> HighLightedEvent = new UnityEvent<CardBase>();
+    
     protected string cardName;
     protected int cardValue;
     protected CardSuite cardSuite;
@@ -18,7 +23,7 @@ public class CardBase : MonoBehaviour
 
     public virtual void Setup(CardStatsBase cardStats)
     {
-        cardName = cardStats.name;
+        cardName = cardStats.DisplayName;
         cardValue = cardStats.Value;
         cardSuite = cardStats.suite;
         playActions = cardStats.PlayActions;
@@ -62,6 +67,30 @@ public class CardBase : MonoBehaviour
         foreach (var action in actionsToDo)
         {
             action.DoCardAction();
+        }
+    }
+
+    private void OnMouseEnter()
+    {
+        if (!transform.parent) { return; }
+        var hand = transform.parent.GetComponent<CardHand>();
+        if (hand)
+        {
+            HighLightedEvent.Invoke(this);
+            transform.position = SlotedPosition + new Vector3(0f, 0f, 3f);
+            transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (!transform.parent) { return; }
+        var hand = transform.parent.GetComponent<CardHand>();
+        if (hand)
+        {
+            HighLightedEvent.Invoke(null);
+            transform.position = SlotedPosition;
+            transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 
