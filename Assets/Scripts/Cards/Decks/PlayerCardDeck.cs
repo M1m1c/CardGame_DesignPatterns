@@ -8,7 +8,7 @@ public class PlayerCardDeck : CardDeck
 {
     private int heroCardThrehsold = 12;
     private int maxCardRand = 53;
-    
+
     public override CardBase CreateCard()
     {
         if (AvilableCards.CardStats.Length <= 0) { return null; }
@@ -28,13 +28,17 @@ public class PlayerCardDeck : CardDeck
             //TODO remove suites not avilable from temp suites
         }
 
+        //cardType = CardType.Hero;
 
         var chosenSuite = tempSuites[Random.Range(0, tempSuites.Count)];
         var chosenCardStat = AvilableCards.CardStats.FirstOrDefault(q => q.suite == chosenSuite && q.cardType == cardType);
 
-        var cardInstance= Instantiate(chosenCardStat.cardPrefab, transform.position,Quaternion.identity);
-        cardInstance.Setup(chosenCardStat);
-        retVal = cardInstance;
+        if (chosenCardStat.cardPrefab)
+        {
+            var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
+            cardInstance.Setup(chosenCardStat);
+            retVal = cardInstance;
+        }
 
         return retVal;
     }
