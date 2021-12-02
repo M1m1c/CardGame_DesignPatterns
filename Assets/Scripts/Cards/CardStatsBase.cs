@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewCardStats", menuName = "CardStatsBase")]
 public class CardStatsBase : ScriptableObject
 {
-    public string Name;
+    public string DisplayName;
     public int Value;
     public CardSuite suite;
     public CardType cardType;
@@ -17,12 +17,6 @@ public class CardStatsBase : ScriptableObject
     public CardAction[] PlayActions;
     public CardAction[] DrawActions;
     public CardAction[] LeaveActions;
-}
-
-[CreateAssetMenu(fileName = "NewCardStatCollection", menuName = "CardStatsCollection")]
-public class CardStatsCollection : ScriptableObject
-{
-    public CardStatsBase[] CardStats;
 }
 
 [System.Serializable]
