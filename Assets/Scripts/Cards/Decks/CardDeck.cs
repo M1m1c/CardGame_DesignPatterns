@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class CardDeck : MonoBehaviour
 {
     public CardStatsCollection AvilableCards;
-    public CardSuite[] suites = new CardSuite[] { CardSuite.Clubs, CardSuite.Spades, CardSuite.Hearts, CardSuite.Diamonds };
+    protected CardSuite[] suites = new CardSuite[] { CardSuite.Clubs, CardSuite.Spades, CardSuite.Hearts, CardSuite.Diamonds };
 
     public abstract CardBase CreateCard();
 
