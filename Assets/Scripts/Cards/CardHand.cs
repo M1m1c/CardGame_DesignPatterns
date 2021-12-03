@@ -1,19 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CardHand : MonoBehaviour
+public class CardHand : CardHolder
 {
 
     public CardDeck cardDeck;
 
-    private int currentHandCount = 0;
+    
 
-    private float cardXOfffest = 8.5f;
-    private float cardXStartPos = -17f;//-21.25f;
-
-    private CardBase[] heldCards = new CardBase[5];
     private CardBase highLightedCard = null;
     private CardBase selectedCard = null;
     private LineRenderer targetingLine = null;
@@ -47,6 +44,7 @@ public class CardHand : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             SelectCardInHand();
+            PlayCardToPlayArea();           
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -54,31 +52,45 @@ public class CardHand : MonoBehaviour
         }
     }
 
-    private void DrawCardsPhase()
+    private void PlayCardToPlayArea()
     {
-        while (currentHandCount < heldCards.Length)
-        {
-            if (DrawCard(currentHandCount))
-            {
-                currentHandCount++;
-            }
-        }
+        if (!selectedCard) { return; }
+
+        var entity = hit.collider.gameObject;
+        if (!entity) { return; }
+
+        var playArea = entity.GetComponent<PlayArea>();
+        if (!playArea) { return; }
+
+        var tempSelection = selectedCard;
+        RemoveCard(tempSelection);
+        playArea.AddCard(tempSelection);
+    }
+
+    private void RemoveCard(CardBase tempSelection)
+    {
+        DeSelectCardInHand();
+        heldCards[Array.IndexOf(heldCards, tempSelection)] = null;
+        currentHeldCount--;
+
+        var startPosIndex = currentHeldCount;
+        if (currentHeldCount > 0) { startPosIndex--; }
+        cardXStartPos = cardXPosStarts[startPosIndex];
+
         ReorganizeHeldCardPositions();
     }
 
-    private void ReorganizeHeldCardPositions()
+    private void DrawCardsPhase()
     {
-        var pos = cardXStartPos;
-        var xOffset = 0f;
-        for (int i = 0; i < currentHandCount; i++)
+        while (currentHeldCount < heldCards.Length)
         {
-            var card = heldCards[i];
-            if (card.transform.parent == transform) { continue; }
-            card.transform.position = this.transform.position + new Vector3(pos + xOffset, 0f, 0f);
-            card.transform.parent = transform;
-            card.SlotedPosition = heldCards[i].transform.position;
-            xOffset += cardXOfffest;
+            if (DrawCard(currentHeldCount))
+            {
+                cardXStartPos = cardXPosStarts[currentHeldCount];
+                currentHeldCount++;
+            }
         }
+        ReorganizeHeldCardPositions();
     }
 
     private bool DrawCard(int drawIndex)
