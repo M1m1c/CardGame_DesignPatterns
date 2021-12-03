@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewCardStats", menuName = "CardStatsBase")]
+[CreateAssetMenu(fileName = "NewCardStats", menuName = "Cards/CardStatsBase")]
 public class CardStatsBase : ScriptableObject
 {
     public string DisplayName;
@@ -14,6 +14,8 @@ public class CardStatsBase : ScriptableObject
 
     public CardBase cardPrefab;
 
+    public CardAction[] SelectedActions;
+    public CardAction[] DeSelectedActions;
     public CardAction[] PlayActions;
     public CardAction[] DrawActions;
     public CardAction[] LeaveActions;
