@@ -31,13 +31,16 @@ public class PlayerCardDeck : CardDeck
         //cardType = CardType.Hero;
 
         var chosenSuite = tempSuites[Random.Range(0, tempSuites.Count)];
-        var chosenCardStat = AvilableCards.CardStats.FirstOrDefault(q => q.suite == chosenSuite && q.cardType == cardType);
+        var chosenCardStat = AvilableCards.CardStats.FirstOrDefault(q => q.cardType == cardType && q.suite == chosenSuite);
 
-        if (chosenCardStat.cardPrefab)
+        if (chosenCardStat != null && chosenCardStat.suite != CardSuite.None)
         {
-            var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
-            cardInstance.Setup(chosenCardStat);
-            retVal = cardInstance;
+            if (chosenCardStat.cardPrefab)
+            {
+                var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
+                cardInstance.Setup(chosenCardStat);
+                retVal = cardInstance;
+            }
         }
 
         return retVal;

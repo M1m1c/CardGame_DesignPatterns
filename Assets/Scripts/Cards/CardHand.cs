@@ -13,7 +13,8 @@ public class CardHand : MonoBehaviour
     private float cardXStartPos = -17f;//-21.25f;
 
     private CardBase[] heldCards = new CardBase[5];
-    private CardBase HighLightedCard = null;
+    private CardBase highLightedCard = null;
+    private CardBase selectedCard = null;
 
     //TODO needs a list of cards,
     //a way of highlighting cards that the mouse pases over,
@@ -66,15 +67,46 @@ public class CardHand : MonoBehaviour
         return retval;
     }
 
-    private void SetHighLightedCard(CardBase card)
+    private void SetHighLightedCard(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
     {
-        HighLightedCard = card;
+        if (highLightedCard && card == null)
+        {
+            SetCardPosAndSize(highLightedCard, posToSet, sizeToSet);
+        }
+        else if (card)
+        {
+            SetCardPosAndSize(card, posToSet, sizeToSet);
+        }
+
+        highLightedCard = card;
+    }
+
+    public bool IsThereACardSelection()
+    {
+        return selectedCard != null;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (highLightedCard && selectedCard == null) { selectedCard = highLightedCard; }
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (selectedCard)
+            {
+                SetCardPosAndSize(selectedCard, selectedCard.SlotedPosition, selectedCard.OriginalSize);
+                selectedCard = null;
+                highLightedCard = null;
+            }
+        }
     }
-   
+
+    private void SetCardPosAndSize(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
+    {
+        card.transform.position = posToSet;
+        card.transform.localScale = sizeToSet;
+    }
 }

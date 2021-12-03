@@ -4,9 +4,10 @@ using UnityEngine.Events;
 public class CardBase : MonoBehaviour
 {
     public Vector3 SlotedPosition { get; set; }
+    public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
 
-    public UnityEvent<CardBase> HighLightedEvent = new UnityEvent<CardBase>();
-    
+    public UnityEvent<CardBase, Vector3, Vector3> HighLightedEvent = new UnityEvent<CardBase, Vector3, Vector3>();
+
     protected string cardName;
     protected int cardValue;
     protected CardSuite cardSuite;
@@ -18,7 +19,7 @@ public class CardBase : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     public virtual void Setup(CardStatsBase cardStats)
@@ -72,26 +73,25 @@ public class CardBase : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!transform.parent) { return; }
-        var hand = transform.parent.GetComponent<CardHand>();
-        if (hand)
-        {
-            HighLightedEvent.Invoke(this);
-            transform.position = SlotedPosition + new Vector3(0f, 0f, 3f);
-            transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-        }
+        SetHighlightThisCard(this, new Vector3(0f, 0f, 3f), new Vector3(0.2f, 0.2f, 0.2f));
     }
+
+
 
     private void OnMouseExit()
     {
-        if (!transform.parent) { return; }
-        var hand = transform.parent.GetComponent<CardHand>();
-        if (hand)
-        {
-            HighLightedEvent.Invoke(null);
-            transform.position = SlotedPosition;
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
+        SetHighlightThisCard(null, Vector3.zero, Vector3.zero);
     }
 
+    private void SetHighlightThisCard(CardBase card, Vector3 posOffset, Vector3 scaleToSet)
+    {
+        if (!transform.parent) { return; }
+
+        var hand = transform.parent.GetComponent<CardHand>();
+        if (!hand) { return; }
+        if (hand.IsThereACardSelection()) { return; }
+
+        HighLightedEvent.Invoke(card, SlotedPosition + posOffset, OriginalSize + scaleToSet);
+
+    }
 }
