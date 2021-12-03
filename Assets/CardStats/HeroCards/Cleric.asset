@@ -18,6 +18,10 @@ MonoBehaviour:
   cardType: 1
   Image: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
   cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
+  SelectedActions:
+  - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
+  DeSelectedActions:
+  - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
   PlayActions: []
   DrawActions: []
   LeaveActions: []
