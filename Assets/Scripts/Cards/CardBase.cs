@@ -6,12 +6,12 @@ public class CardBase : MonoBehaviour
     public Vector3 SlotedPosition { get; set; }
     public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
 
-    public UnityEvent<CardBase, Vector3, Vector3> HighLightedEvent = new UnityEvent<CardBase, Vector3, Vector3>();
-
     protected string cardName;
     protected int cardValue;
     protected CardSuite cardSuite;
 
+    protected CardAction[] selectedActions;
+    protected CardAction[] deSelectedActions;
     protected CardAction[] playActions;
     protected CardAction[] drawActions;
     protected CardAction[] leaveActions;
@@ -27,71 +27,43 @@ public class CardBase : MonoBehaviour
         cardName = cardStats.DisplayName;
         cardValue = cardStats.Value;
         cardSuite = cardStats.suite;
+        selectedActions = cardStats.SelectedActions;
+        deSelectedActions = cardStats.DeSelectedActions;
         playActions = cardStats.PlayActions;
         drawActions = cardStats.DrawActions;
         leaveActions = cardStats.LeaveActions;
     }
 
-    public void Play()
+    public void TryDoSelectActions(GameObject target)
     {
-        //TODO probably needs a destination slot to place it at
-        TryDoPlayActions();
+        TryDoActions(selectedActions, target);
     }
 
-    public void Select()
+    public void TryDoDeSelectActions(GameObject target)
     {
-
+        TryDoActions(deSelectedActions, target);
     }
 
-    public void Remove()
+    public void TryDoPlayActions(GameObject target)
     {
-        TryDoLeaveActions();
+        TryDoActions(playActions,target);
     }
 
-    public void TryDoPlayActions()
+    public void TryDoDrawActions(GameObject target)
     {
-        TryDoActions(playActions);
+        TryDoActions(drawActions,target);
     }
 
-    public void TryDoDrawActions()
+    public void TryDoLeaveActions(GameObject target)
     {
-        TryDoActions(drawActions);
+        TryDoActions(leaveActions,target);
     }
 
-    public void TryDoLeaveActions()
-    {
-        TryDoActions(leaveActions);
-    }
-
-    protected void TryDoActions(ICardAction[] actionsToDo)
+    protected void TryDoActions(ICardAction[] actionsToDo, GameObject target)
     {
         foreach (var action in actionsToDo)
         {
-            action.DoCardAction();
+            action.DoCardAction(this, target);
         }
-    }
-
-    private void OnMouseEnter()
-    {
-        SetHighlightThisCard(this, new Vector3(0f, 0f, 3f), new Vector3(0.2f, 0.2f, 0.2f));
-    }
-
-
-
-    private void OnMouseExit()
-    {
-        SetHighlightThisCard(null, Vector3.zero, Vector3.zero);
-    }
-
-    private void SetHighlightThisCard(CardBase card, Vector3 posOffset, Vector3 scaleToSet)
-    {
-        if (!transform.parent) { return; }
-
-        var hand = transform.parent.GetComponent<CardHand>();
-        if (!hand) { return; }
-        if (hand.IsThereACardSelection()) { return; }
-
-        HighLightedEvent.Invoke(card, SlotedPosition + posOffset, OriginalSize + scaleToSet);
-
     }
 }
