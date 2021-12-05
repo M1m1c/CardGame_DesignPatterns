@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DiamondsAction
   m_EditorClassIdentifier: 
   DisplayName: Diamonds
-  Value: 0
+  Value: 5
   suite: 2
   cardType: 2
   Image: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
@@ -22,6 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
   DeSelectedActions:
   - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
-  PlayActions: []
+  PlayActions:
+  - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
   DrawActions: []
   LeaveActions: []
