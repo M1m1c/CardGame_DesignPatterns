@@ -10,6 +10,8 @@ public class DamageCardValue : CardAction
         var targetCard = target.GetComponent<CardPlayable>();
         if (!targetCard) { return; }
 
+        if (targetCard.Owner == owner.Owner) { return; }
+
         var parent = owner.transform.parent;
         if (!parent) { return; }
 
