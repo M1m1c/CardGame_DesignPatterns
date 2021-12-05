@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c487a001adc460043a6e40d2eecb00c6, type: 3}
   m_Name: DiamondsAction
   m_EditorClassIdentifier: 
-  DisplayName: ClubsAction
+  DisplayName: Diamonds
   Value: 0
   suite: 8
   cardType: 2
@@ -26,5 +26,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
   DrawActions: []
   LeaveActions: []
-  minValue: 5
+  MinValue: 5
   MaxValue: 8
