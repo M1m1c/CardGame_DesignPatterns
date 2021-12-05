@@ -1279,6 +1279,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArea
       objectReference: {fileID: 0}
+    - target: {fileID: 983797456283676497, guid: 5dcf7dc4623d053418df2808cab3268d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 983797456283676510, guid: 5dcf7dc4623d053418df2808cab3268d, type: 3}
       propertyPath: m_RootOrder
       value: 7
