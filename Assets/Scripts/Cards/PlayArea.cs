@@ -8,9 +8,9 @@ public class PlayArea : CardHolder
     private OwnerEnum owner;
     public OwnerEnum Owner { get { return owner; } }
 
-    void Start()
+    PlayArea()
     {
-        heldCards = new CardBase[6];
+        heldCards = new CardBase[6]; 
     }
 
     public void AddCard(CardBase card)

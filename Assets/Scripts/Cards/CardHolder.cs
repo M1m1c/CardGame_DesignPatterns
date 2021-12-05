@@ -6,7 +6,7 @@ public class CardHolder : MonoBehaviour
 {
     protected float cardXOffset = 8.5f;
     protected float cardXStartPos = -17f;
-    protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -25.5f };
+    protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f,};
 
     protected int currentHeldCount = 0;
     protected CardBase[] heldCards = new CardBase[5];
