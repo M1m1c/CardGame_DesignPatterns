@@ -6,10 +6,12 @@ public class CardBase : MonoBehaviour
     public Vector3 SlotedPosition { get; set; }
     public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
     public int CardValue { get { return cardValue; } }
+    public OwnerEnum Owner { get { return owner; } }
 
     protected string cardName;
     protected int cardValue;
     protected CardSuite cardSuite;
+    protected OwnerEnum owner;
 
     protected CardAction[] selectedActions;
     protected CardAction[] deSelectedActions;
@@ -23,11 +25,12 @@ public class CardBase : MonoBehaviour
 
     }
 
-    public virtual void Setup(CardStatsBase cardStats)
+    public virtual void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum )
     {
         cardName = cardStats.DisplayName;
         cardValue = cardStats.Value;
         cardSuite = cardStats.suite;
+        owner = ownerEnum;
         selectedActions = cardStats.SelectedActions;
         deSelectedActions = cardStats.DeSelectedActions;
         playActions = cardStats.PlayActions;

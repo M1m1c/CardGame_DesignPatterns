@@ -38,7 +38,7 @@ public class PlayerCardDeck : CardDeck
             if (chosenCardStat.cardPrefab)
             {
                 var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
-                cardInstance.Setup(chosenCardStat);
+                cardInstance.Setup(chosenCardStat, OwnerEnum.Player);
                 retVal = cardInstance;
             }
         }

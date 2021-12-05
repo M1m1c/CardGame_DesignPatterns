@@ -10,9 +10,9 @@ public class CardPlayable : CardBase
 
     private Material frontImageMat;
 
-    public override void Setup(CardStatsBase cardStats)
+    public override void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum)
     {
-        base.Setup(cardStats);
+        base.Setup(cardStats,ownerEnum);
 
         if (cardStats.DisplayName != "")
         {

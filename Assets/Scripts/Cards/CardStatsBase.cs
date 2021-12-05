@@ -39,3 +39,11 @@ public enum CardType
     Action = 1 << 1,
     Unit = 1 << 2
 }
+
+[System.Serializable]
+public enum OwnerEnum
+{
+    none,
+    Player = 1 << 0,
+    AI = 1 << 1
+}
