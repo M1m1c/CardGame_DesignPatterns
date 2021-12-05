@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayArea : CardHolder
 {
+    [SerializeField]
+    private OwnerEnum owner;
+    public OwnerEnum Owner { get { return owner; } }
 
     void Start()
     {

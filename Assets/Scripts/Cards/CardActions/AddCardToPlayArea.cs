@@ -10,6 +10,8 @@ public class AddCardToPlayArea : CardAction
         var playArea = target.GetComponent<PlayArea>();
         if (!playArea) { return; }
 
+        if (playArea.Owner != owner.Owner) { return; }
+
         var parent = owner.transform.parent;
         if (!parent) { return; }
 
