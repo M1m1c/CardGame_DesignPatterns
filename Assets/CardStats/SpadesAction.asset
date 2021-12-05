@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74f316076a614694282b394a773509d8, type: 3}
+  m_Script: {fileID: 11500000, guid: c487a001adc460043a6e40d2eecb00c6, type: 3}
   m_Name: SpadesAction
   m_EditorClassIdentifier: 
-  DisplayName: Spades
-  Value: 5
+  DisplayName: ClubsAction
+  Value: 0
   suite: 2
   cardType: 2
-  Image: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+  Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
   cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
   SelectedActions:
   - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
@@ -26,3 +26,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
   DrawActions: []
   LeaveActions: []
+  minValue: 5
+  MaxValue: 8
