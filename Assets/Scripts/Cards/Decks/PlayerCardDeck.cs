@@ -37,17 +37,23 @@ public class PlayerCardDeck : CardDeck
         {
             if (chosenCardStat.cardPrefab)
             {
-                if(chosenCardStat is ActionCardStats)
+                if (chosenCardStat is ActionCardStats)
                 {
-                   chosenCardStat= new ActionCardStats((ActionCardStats)chosenCardStat);
+                    chosenCardStat = new ActionCardStats((ActionCardStats)chosenCardStat);
                 }
 
-                var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
-                cardInstance.Setup(chosenCardStat, OwnerEnum.Player);
+                var cardInstance = CreateCardBasedOnStats(chosenCardStat);
                 retVal = cardInstance;
             }
         }
 
         return retVal;
+    }
+
+    public CardBase CreateCardBasedOnStats(CardStatsBase chosenCardStat)
+    {
+        var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
+        cardInstance.Setup(chosenCardStat, OwnerEnum.Player);
+        return cardInstance;
     }
 }
