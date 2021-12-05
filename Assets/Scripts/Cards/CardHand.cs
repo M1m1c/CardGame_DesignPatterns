@@ -89,7 +89,7 @@ public class CardHand : CardHolder
     {
         while (currentHeldCount < heldCards.Length)
         {
-            if (DrawCard(currentHeldCount))
+            if (DrawCard())
             {
                 cardXStartPos = cardXPosStarts[currentHeldCount];
                 currentHeldCount++;
@@ -98,13 +98,13 @@ public class CardHand : CardHolder
         ReorganizeHeldCardPositions();
     }
 
-    private bool DrawCard(int drawIndex)
+    private bool DrawCard()
     {
         var retval = false;
         var card = cardDeck.CreateCard();
         if (card)
         {
-            heldCards[drawIndex] = card;
+            heldCards[Array.IndexOf(heldCards, null)] = card;
             retval = true;
         }
         return retval;
