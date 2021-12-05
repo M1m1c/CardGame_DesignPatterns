@@ -43,10 +43,8 @@ public class CardHand : CardHolder
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            SelectCardInHand();
             AttemptPlayCard();
-
-
+            SelectCardInHand();
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
