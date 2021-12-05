@@ -44,7 +44,9 @@ public class CardHand : CardHolder
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             SelectCardInHand();
-            PlayCardToPlayArea();           
+            AttemptPlayCard();
+
+
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -52,22 +54,7 @@ public class CardHand : CardHolder
         }
     }
 
-    private void PlayCardToPlayArea()
-    {
-        if (!selectedCard) { return; }
-
-        var entity = hit.collider.gameObject;
-        if (!entity) { return; }
-
-        var playArea = entity.GetComponent<PlayArea>();
-        if (!playArea) { return; }
-
-        var tempSelection = selectedCard;
-        RemoveCard(tempSelection);
-        playArea.AddCard(tempSelection);
-    }
-
-    private void RemoveCard(CardBase tempSelection)
+    public void RemoveCard(CardBase tempSelection)
     {
         DeSelectCardInHand();
         heldCards[Array.IndexOf(heldCards, tempSelection)] = null;
@@ -78,6 +65,26 @@ public class CardHand : CardHolder
         cardXStartPos = cardXPosStarts[startPosIndex];
 
         ReorganizeHeldCardPositions();
+    }
+
+    public void DestroyCard(CardBase card)
+    {
+        if (!card) { return; }
+
+        var isInHand = heldCards.FirstOrDefault(q => q == card);
+        if (!isInHand) { return; }
+
+        Destroy(card.gameObject);
+    }
+
+    private void AttemptPlayCard()
+    {
+        if (!selectedCard) { return; }
+
+        var target = hit.collider.gameObject;
+        if (!target) { return; }
+
+        selectedCard.TryDoPlayActions(target);
     }
 
     private void DrawCardsPhase()
