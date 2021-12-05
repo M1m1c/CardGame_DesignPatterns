@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-public class HeroCard : CardBase
+public class CardPlayable : CardBase
 {
     public TextMesh FirstLetterName;
     public TextMesh RestName;
@@ -33,6 +33,18 @@ public class HeroCard : CardBase
         frontImageMat = new Material(FrontImage.material);
         frontImageMat.mainTexture = cardStats.Image;
         FrontImage.material = frontImageMat;
+    }
+
+    public void ChangeCardValue(int changeValue)
+    {
+        cardValue = Mathf.Clamp(cardValue + changeValue, 0, 30);
+
+        HealthText.text = "" + cardValue;
+
+        if (cardValue <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Start is called before the first frame update
