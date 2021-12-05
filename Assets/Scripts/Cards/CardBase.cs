@@ -5,6 +5,7 @@ public class CardBase : MonoBehaviour
 {
     public Vector3 SlotedPosition { get; set; }
     public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
+    public int CardValue { get { return cardValue; } }
 
     protected string cardName;
     protected int cardValue;
