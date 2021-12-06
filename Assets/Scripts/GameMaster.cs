@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,15 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
 
+    public bool HeroPlayedThisTurn { get; private set; } = false;
+
     public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() {
+        CardSuite.Spades,
+        CardSuite.Diamonds,
+        CardSuite.Hearts };
+
+    public List<CardSuite> ActionCardAllowence { get; private set; } = new List<CardSuite>() {
+         CardSuite.Clubs,
         CardSuite.Spades,
         CardSuite.Diamonds,
         CardSuite.Hearts };
@@ -19,6 +28,8 @@ public class GameMaster : MonoBehaviour
         CardSuite.Hearts };
 
     protected Observer<List<CardSuite>> suiteObserver;
+    protected Observer<CardBase> CardPlayObserver;
+    protected Observer<CardHand> TurnOverObserver;
 
     private void Awake()
     {
@@ -35,17 +46,70 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
+        SetupPlayerArea();
+
+        BindHandObservers();
+       
+        SetupCardAllowence();
+    }
+
+    public void UpdateCardAllowence(CardBase cardToRemove)
+    {
+        if (cardToRemove.Type == CardType.Hero)
+        {
+            HeroPlayedThisTurn = true;
+            return;
+        }
+
+        var suite = cardToRemove.Suite;
+
+        if (ActionCardAllowence.Contains(suite))
+        {
+            ActionCardAllowence.Remove(suite);
+        }
+    }
+
+
+    private void SetupPlayerArea()
+    {
         var playAreas = FindObjectsOfType<PlayArea>();
         var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
         if (!playerArea) { return; }
 
-        suiteObserver = new Observer<List<CardSuite>>(UpdateUnavialableSuites);
-        playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
-
+        BindSuiteObserver(playerArea);
         AddPlayerStartCard(playerArea);
     }
 
-    private static void AddPlayerStartCard(PlayArea playerArea)
+    private void BindHandObservers()
+    {
+        var cardHand = FindObjectOfType<CardHand>();
+        if (!cardHand) { return; }
+        CardPlayObserver = new Observer<CardBase>(UpdateCardAllowence);
+        cardHand.OnCardPlayed.AddObserver(CardPlayObserver);
+
+        TurnOverObserver = new Observer<CardHand>(CheckIfPlayerTurnOver);
+        cardHand.OnCheckTurnOver.AddObserver(TurnOverObserver);
+
+    }
+
+    private void BindSuiteObserver(PlayArea playerArea)
+    {
+        suiteObserver = new Observer<List<CardSuite>>(UpdateUnavialableSuites);
+        playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
+    }
+
+  
+    private void SetupCardAllowence()
+    {
+        ActionCardAllowence = cardSuitesInGame.ToList();
+        foreach (var suite in UnavailableSuites)
+        {
+            ActionCardAllowence.Remove(suite);
+        }
+        HeroPlayedThisTurn = false;
+    }
+
+    private void AddPlayerStartCard(PlayArea playerArea)
     {
         var playerDeck = FindObjectOfType<PlayerCardDeck>();
         if (!playerDeck) { return; }
@@ -69,6 +133,17 @@ public class GameMaster : MonoBehaviour
         }
         UnavailableSuites = tempSuites;
     }
+
+    private void CheckIfPlayerTurnOver(CardHand hand)
+    {
+        if ((HeroPlayedThisTurn && ActionCardAllowence.Count == 0) ||
+            (hand.DoesHeldCardsContainType(CardType.Hero) && !HeroPlayedThisTurn))
+        {
+            //Player turn is over, transition to ai turn
+        }
+        //TODO use state machine to siwthc state to enemy turn
+    }
+
     //TODO use Observer pattern to look at the play areas and the player hand.
     //use state pattern to deal with whos turn it is.
     //If player cant play any more cards, transition AI turn.
