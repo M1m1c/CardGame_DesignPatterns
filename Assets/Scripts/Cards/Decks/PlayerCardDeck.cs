@@ -25,7 +25,11 @@ public class PlayerCardDeck : CardDeck
         else
         {
             cardType = CardType.Action;
-            //TODO remove suites not avilable from temp suites
+            var unavailableSuites = GameMaster.Instance.UnavailableSuites;
+            foreach (var uSuite in unavailableSuites)
+            {
+                tempSuites.Remove(uSuite);
+            }
         }
 
         //cardType = CardType.Hero;
