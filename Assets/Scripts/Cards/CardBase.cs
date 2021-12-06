@@ -6,12 +6,14 @@ public class CardBase : MonoBehaviour
     public Vector3 SlotedPosition { get; set; }
     public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
     public int CardValue { get { return cardValue; } }
-    public OwnerEnum Owner { get { return owner; } }
     public CardSuite Suite { get { return cardSuite; } }
+    public CardType Type { get { return cardType; } }
+    public OwnerEnum Owner { get { return owner; } }
 
     protected string cardName;
     protected int cardValue;
     protected CardSuite cardSuite;
+    protected CardType cardType;
     protected OwnerEnum owner;
 
     protected CardAction[] selectedActions;
@@ -31,6 +33,7 @@ public class CardBase : MonoBehaviour
         cardName = cardStats.DisplayName;
         cardValue = cardStats.Value;
         cardSuite = cardStats.suite;
+        cardType = cardStats.cardType;
         owner = ownerEnum;
         selectedActions = cardStats.SelectedActions;
         deSelectedActions = cardStats.DeSelectedActions;
