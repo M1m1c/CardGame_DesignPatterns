@@ -41,7 +41,7 @@ public class CardHand : CardHolder
         {
             AttemptPlayCard();
             SelectCardInHand();
-
+            OnCheckTurnOver.Notify(this);
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
