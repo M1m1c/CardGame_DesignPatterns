@@ -38,13 +38,14 @@ public class GameMaster : MonoBehaviour
         var playAreas = FindObjectsOfType<PlayArea>();
         var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
         if (!playerArea) { return; }
+
         suiteObserver = new Observer<PlayArea, List<CardSuite>>(UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
 
-        AddPlayerStartCard();
+        AddPlayerStartCard(playerArea);
     }
 
-    private static void AddPlayerStartCard()
+    private static void AddPlayerStartCard(PlayArea playerArea)
     {
         var playerDeck = FindObjectOfType<PlayerCardDeck>();
         if (!playerDeck) { return; }
@@ -53,10 +54,6 @@ public class GameMaster : MonoBehaviour
             q => q.cardType == CardType.Hero &&
             q.suite == CardSuite.Clubs);
         if (!startingHero) { return; }
-
-        var playAreas = FindObjectsOfType<PlayArea>();
-        var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
-        if (!playerArea) { return; }
 
         var firstCard = playerDeck.CreateCardBasedOnStats(startingHero);
         playerArea.AddCard(firstCard);
