@@ -8,7 +8,8 @@ public class PlayArea : CardHolder
     private OwnerEnum owner;
     public OwnerEnum Owner { get { return owner; } }
 
-    public Subject<List<CardSuite>> OnUpdateAvailableSuites = new Subject<List<CardSuite>>();
+    public Subject<List<CardSuite>> OnUpdateAvailableSuites { get; private set; } = new Subject<List<CardSuite>>();
+
     PlayArea()
     {
         heldCards = new CardBase[6];
@@ -29,7 +30,7 @@ public class PlayArea : CardHolder
         {
             if (item == null) { continue; }
             if (item.Suite == CardSuite.None) { continue; }
-            if (cardSuitesOnField.Exists(q => q == item.Suite)) { continue; }
+            if (cardSuitesOnField.Contains(item.Suite)) { continue; }
             cardSuitesOnField.Add(item.Suite);
         }
         OnUpdateAvailableSuites.Notify(cardSuitesOnField);
