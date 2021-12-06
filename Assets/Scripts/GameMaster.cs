@@ -18,7 +18,7 @@ public class GameMaster : MonoBehaviour
         CardSuite.Diamonds,
         CardSuite.Hearts };
 
-    protected Observer<PlayArea, List<CardSuite>> suiteAvailabilityObserver;
+    protected Observer<PlayArea, List<CardSuite>> suiteObserver;
 
     private void Awake()
     {
@@ -38,8 +38,8 @@ public class GameMaster : MonoBehaviour
         var playAreas = FindObjectsOfType<PlayArea>();
         var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
         if (!playerArea) { return; }
-        suiteAvailabilityObserver = new Observer<PlayArea, List<CardSuite>>(UpdateUnavialableSuites);
-        playerArea.OnUpdateAvailableSuites.AddObserver(suiteAvailabilityObserver);
+        suiteObserver = new Observer<PlayArea, List<CardSuite>>(UpdateUnavialableSuites);
+        playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
 
         AddPlayerStartCard();
     }
