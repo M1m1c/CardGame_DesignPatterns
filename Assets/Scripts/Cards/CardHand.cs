@@ -9,7 +9,9 @@ public class CardHand : CardHolder
 
     public CardDeck cardDeck;
 
-    
+    public Subject<CardBase> OnCardPlayed { get; private set; } = new Subject<CardBase>();
+    public Subject<CardHand> OnCheckTurnOver { get; private set; } = new Subject<CardHand>();
+
 
     private CardBase highLightedCard = null;
     private CardBase selectedCard = null;
@@ -18,18 +20,12 @@ public class CardHand : CardHolder
     private Ray ray;
     private RaycastHit hit;
 
-    //TODO needs a list of cards,
-    //a way of highlighting cards that the mouse pases over,
-    //a way of selecting cards in hand,
-    //a way of playing cards
 
-    // Start is called before the first frame update
     void Start()
     {
         DrawCardsPhase();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,6 +41,7 @@ public class CardHand : CardHolder
         {
             AttemptPlayCard();
             SelectCardInHand();
+
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -79,10 +76,26 @@ public class CardHand : CardHolder
     {
         if (!selectedCard) { return; }
 
+        var GM = GameMaster.Instance;
+
+        if (selectedCard.Type == CardType.Hero)
+        {
+            if (GM.HeroPlayedThisTurn == true) 
+            { return; }
+        }
+        else if (selectedCard.Type == CardType.Action)
+        {
+            if (!GM.ActionCardAllowence.Contains(selectedCard.Suite) ||
+                GM.ActionCardAllowence.Count == 0)
+            { return; }
+        }
+
         var target = hit.collider.gameObject;
         if (!target) { return; }
 
+        OnCardPlayed.Notify(selectedCard);
         selectedCard.TryDoPlayActions(target);
+
     }
 
     private void DrawCardsPhase()
@@ -111,7 +124,7 @@ public class CardHand : CardHolder
     }
 
 
-   
+
 
     private void HoverOverCardInHand()
     {
@@ -142,7 +155,7 @@ public class CardHand : CardHolder
         }
     }
 
-  
+
 
     private void DeSelectCardInHand()
     {
