@@ -7,6 +7,7 @@ public class CardBase : MonoBehaviour
     public Vector3 OriginalSize { get; private set; } = new Vector3(1f, 1f, 1f);
     public int CardValue { get { return cardValue; } }
     public OwnerEnum Owner { get { return owner; } }
+    public CardSuite Suite { get { return cardSuite; } }
 
     protected string cardName;
     protected int cardValue;
