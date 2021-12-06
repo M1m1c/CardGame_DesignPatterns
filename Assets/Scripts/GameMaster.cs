@@ -49,7 +49,7 @@ public class GameMaster : MonoBehaviour
         SetupPlayerArea();
 
         BindHandObservers();
-       
+
         SetupCardAllowence();
     }
 
@@ -98,7 +98,7 @@ public class GameMaster : MonoBehaviour
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
     }
 
-  
+
     private void SetupCardAllowence()
     {
         ActionCardAllowence = cardSuitesInGame.ToList();
@@ -136,10 +136,12 @@ public class GameMaster : MonoBehaviour
 
     private void CheckIfPlayerTurnOver(CardHand hand)
     {
-        if ((HeroPlayedThisTurn && ActionCardAllowence.Count == 0) ||
-            (hand.DoesHeldCardsContainType(CardType.Hero) && !HeroPlayedThisTurn))
+        //Also should probably make call if all enemies are dead on the oposite board
+        var cantPlayHeroCard = HeroPlayedThisTurn || !hand.DoesHeldCardsContainType(CardType.Hero);
+        if (ActionCardAllowence.Count == 0 && cantPlayHeroCard)
         {
             //Player turn is over, transition to ai turn
+            Debug.Log("Player turn over");
         }
         //TODO use state machine to siwthc state to enemy turn
     }
