@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CardHolder : MonoBehaviour
@@ -10,6 +11,11 @@ public class CardHolder : MonoBehaviour
 
     protected int currentHeldCount = 0;
     protected CardBase[] heldCards = new CardBase[5];
+
+    public bool DoesHeldCardsContainType(CardType cardType)
+    {
+        return heldCards.FirstOrDefault(q => q.Type == cardType);
+    }
 
     protected virtual void ReorganizeHeldCardPositions()
     {
