@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class SubjectComp : MonoBehaviour
+public class Subject<TEntity,TEventData>
 {
     public int observerCount { get; private set; }
-    private ObserverComp head;
+    private Observer<TEntity, TEventData> head;
 
-    public void AddObserver(ObserverComp observerToAdd)
+    public void AddObserver(Observer<TEntity, TEventData> observerToAdd)
     {
         observerToAdd.Next = head;
         head = observerToAdd;
     }
 
-    public void RemoveObserver(ObserverComp observerToRemove)
+    public void RemoveObserver(Observer<TEntity, TEventData> observerToRemove)
     {
         if (head == observerToRemove)
         {
@@ -34,9 +34,9 @@ public class SubjectComp : MonoBehaviour
         }
     }
 
-    protected void Notify<TEntity, TEventData>(TEntity entity, TEventData eventData)
+    public void Notify(TEntity entity, TEventData eventData)
     {
         if (head == null) { return; }
-        head.OnNotify<TEntity, TEventData>(entity, eventData);
+        head.OnNotify(entity, eventData);
     }
 }
