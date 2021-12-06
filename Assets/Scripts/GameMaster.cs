@@ -7,18 +7,18 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
 
-    public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() { 
+    public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() {
         CardSuite.Spades,
         CardSuite.Diamonds,
         CardSuite.Hearts };
 
-    protected CardSuite[] cardSuitesInGame = new CardSuite[] { 
+    protected CardSuite[] cardSuitesInGame = new CardSuite[] {
         CardSuite.Clubs,
         CardSuite.Spades,
         CardSuite.Diamonds,
         CardSuite.Hearts };
 
-    protected Observer<PlayArea, List<CardSuite>> suiteObserver;
+    protected Observer<List<CardSuite>> suiteObserver;
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class GameMaster : MonoBehaviour
         var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
         if (!playerArea) { return; }
 
-        suiteObserver = new Observer<PlayArea, List<CardSuite>>(UpdateUnavialableSuites);
+        suiteObserver = new Observer<List<CardSuite>>(UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
 
         AddPlayerStartCard(playerArea);
@@ -59,7 +59,7 @@ public class GameMaster : MonoBehaviour
         playerArea.AddCard(firstCard);
     }
 
-    private void UpdateUnavialableSuites(PlayArea area, List<CardSuite> suitesInArea)
+    private void UpdateUnavialableSuites(List<CardSuite> suitesInArea)
     {
         var tempSuites = cardSuitesInGame.ToList();
 
