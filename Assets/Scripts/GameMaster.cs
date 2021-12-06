@@ -7,6 +7,19 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
 
+    public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() { 
+        CardSuite.Spades,
+        CardSuite.Diamonds,
+        CardSuite.Hearts };
+
+    protected CardSuite[] cardSuitesInGame = new CardSuite[] { 
+        CardSuite.Clubs,
+        CardSuite.Spades,
+        CardSuite.Diamonds,
+        CardSuite.Hearts };
+
+    protected Observer<PlayArea, List<CardSuite>> suiteAvailabilityObserver;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,7 +35,17 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
+        var playAreas = FindObjectsOfType<PlayArea>();
+        var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
+        if (!playerArea) { return; }
+        suiteAvailabilityObserver = new Observer<PlayArea, List<CardSuite>>(UpdateUnavialableSuites);
+        playerArea.OnUpdateAvailableSuites.AddObserver(suiteAvailabilityObserver);
 
+        AddPlayerStartCard();
+    }
+
+    private static void AddPlayerStartCard()
+    {
         var playerDeck = FindObjectOfType<PlayerCardDeck>();
         if (!playerDeck) { return; }
 
@@ -37,9 +60,18 @@ public class GameMaster : MonoBehaviour
 
         var firstCard = playerDeck.CreateCardBasedOnStats(startingHero);
         playerArea.AddCard(firstCard);
-
     }
 
+    private void UpdateUnavialableSuites(PlayArea area, List<CardSuite> suitesInArea)
+    {
+        var tempSuites = cardSuitesInGame.ToList();
+
+        foreach (var suite in suitesInArea)
+        {
+            tempSuites.Remove(suite);
+        }
+        UnavailableSuites = tempSuites;
+    }
     //TODO use Observer pattern to look at the play areas and the player hand.
     //use state pattern to deal with whos turn it is.
     //If player cant play any more cards, transition AI turn.
