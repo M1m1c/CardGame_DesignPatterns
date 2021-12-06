@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class PlayerCardDeck : CardDeck
 {
-    private int heroCardThrehsold = 12;
-    private int maxCardRand = 53;
+    private int heroCardThrehsold = 25;
+    private int maxCardRand = 101;
 
     public override CardBase CreateCard()
     {
