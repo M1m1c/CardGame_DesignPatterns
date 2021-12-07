@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Action_DamageCardValue", menuName = "Actions/Action_DamageCardValue")]
 public class DamageCardValue : CardAction
 {
-    public override void DoCardAction(CardBase owner, GameObject target)
+    public override void DoAction(CardBase owner, GameObject target)
     {
         if (!owner) { return; }
 

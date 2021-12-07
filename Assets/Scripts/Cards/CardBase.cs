@@ -67,11 +67,11 @@ public class CardBase : MonoBehaviour
         TryDoActions(leaveActions,target);
     }
 
-    protected void TryDoActions(ICardAction[] actionsToDo, GameObject target)
+    protected void TryDoActions(CardAction[] actionsToDo, GameObject target)
     {
         foreach (var action in actionsToDo)
         {
-            action.DoCardAction(this, target);
+            action.DoAction(this, target);
         }
     }
 }

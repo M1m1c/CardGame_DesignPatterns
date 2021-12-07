@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Action_AddTargetingLine", menuName = "Actions/Action_AddTargetingLine")]
 public class AddTargetingLine : CardAction
 {
-    public override void DoCardAction(CardBase owner, GameObject target)
+    public override void DoAction(CardBase owner, GameObject target)
     {
         if (!owner) { return; }
         if (owner.GetComponent<LineRenderer>()) { return; }
