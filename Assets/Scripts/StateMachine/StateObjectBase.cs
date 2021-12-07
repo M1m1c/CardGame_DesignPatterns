@@ -2,9 +2,8 @@ using UnityEngine;
 
 public interface IState
 {
-    public abstract void Setup();
-    public abstract void HandleInput<TEntity, TInput>(TEntity entity, TInput input);
-    public abstract void UpdateState<TEntity>(TEntity entity);
+    public abstract void Enter(GameMaster owner, CardHolder target);
+    public abstract void Exit(GameMaster owner, CardHolder target);
     public abstract StateLink[] GetStateLinks();
 }
 
@@ -12,21 +11,26 @@ public interface IState
 [CreateAssetMenu(fileName ="NewState",menuName ="State_Base")]
 public class StateObjectBase : ScriptableObject ,IState
 {
+    [SerializeField] protected StateAction[] EntryActions;
+
+    [SerializeField] protected StateAction[] ExitActions;
+
     [SerializeField] protected StateLink[] stateLinks;
   
-    public virtual void Setup()
+    public virtual void Enter(GameMaster owner, CardHolder target)
     {
-        throw new System.NotImplementedException();
-    }   
-
-    public virtual void HandleInput<TEntity, TInput>(TEntity entity, TInput input)
-    {
-        throw new System.NotImplementedException();
+        foreach (var action in EntryActions)
+        {
+            action.DoAction(owner, target);
+        }
     }
 
-    public virtual void UpdateState<TEntity>(TEntity entity)
+    public virtual void Exit(GameMaster owner, CardHolder target)
     {
-        throw new System.NotImplementedException();
+        foreach (var action in ExitActions)
+        {
+            action.DoAction(owner, target);
+        }
     }
 
     public StateLink[] GetStateLinks()
