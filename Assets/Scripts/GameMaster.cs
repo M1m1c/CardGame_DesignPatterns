@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,27 +5,11 @@ using UnityEngine;
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
+   
 
     public StateObjectBase CurrentState;
 
-    public bool HeroPlayedThisTurn { get; private set; } = false;
-
-    public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() {
-        CardSuite.Spades,
-        CardSuite.Diamonds,
-        CardSuite.Hearts };
-
-    public List<CardSuite> ActionCardAllowence { get; private set; } = new List<CardSuite>() {
-         CardSuite.Clubs,
-        CardSuite.Spades,
-        CardSuite.Diamonds,
-        CardSuite.Hearts };
-
-    protected CardSuite[] cardSuitesInGame = new CardSuite[] {
-        CardSuite.Clubs,
-        CardSuite.Spades,
-        CardSuite.Diamonds,
-        CardSuite.Hearts };
+    protected PlayerMaster PlayerMasterComp;
 
     protected Observer<List<CardSuite>> suiteObserver;
     protected Observer<CardBase> CardPlayObserver;
@@ -35,6 +17,8 @@ public class GameMaster : MonoBehaviour
 
     protected CardHand playerHand;
     protected CardHolder AiBoard;
+
+   
 
     private void Awake()
     {
@@ -46,44 +30,19 @@ public class GameMaster : MonoBehaviour
         {
             Instance = this;
         }
-
+        PlayerMasterComp = GetComponent<PlayerMaster>();
     }
 
     private void Start()
     {
         SetupPlayerArea();
 
-        BindHandObservers();
+        BindPlayerHandObservers();
 
-        SetupCardAllowence();
+        PlayerMasterComp.SetupCardAllowence();
     }
 
-    public void UpdateCardAllowence(CardBase cardToRemove)
-    {
-        if (cardToRemove.Type == CardType.Hero)
-        {
-            HeroPlayedThisTurn = true;
-            return;
-        }
-
-        var suite = cardToRemove.Suite;
-
-        if (ActionCardAllowence.Contains(suite))
-        {
-            ActionCardAllowence.Remove(suite);
-        }
-    }
-
-    private void SetupCardAllowence()
-    {
-        ActionCardAllowence = cardSuitesInGame.ToList();
-        foreach (var suite in UnavailableSuites)
-        {
-            ActionCardAllowence.Remove(suite);
-        }
-        HeroPlayedThisTurn = false;
-    }
-
+   
     private void SetupPlayerArea()
     {
         var playAreas = FindObjectsOfType<PlayArea>();
@@ -91,14 +50,14 @@ public class GameMaster : MonoBehaviour
         if (!playerArea) { return; }
 
         BindSuiteObserver(playerArea);
-        AddPlayerStartCard(playerArea);
+        PlayerMasterComp.AddPlayerStartCard(playerArea);
     }
 
-    private void BindHandObservers()
+    private void BindPlayerHandObservers()
     {
         playerHand = FindObjectOfType<CardHand>();
         if (!playerHand) { return; }
-        CardPlayObserver = new Observer<CardBase>(UpdateCardAllowence);
+        CardPlayObserver = new Observer<CardBase>(PlayerMasterComp.UpdateCardAllowence);
         playerHand.OnCardPlayed.AddObserver(CardPlayObserver);
 
         TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
@@ -108,33 +67,8 @@ public class GameMaster : MonoBehaviour
 
     private void BindSuiteObserver(PlayArea playerArea)
     {
-        suiteObserver = new Observer<List<CardSuite>>(UpdateUnavialableSuites);
+        suiteObserver = new Observer<List<CardSuite>>(PlayerMasterComp.UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
-    }
-
-    private void AddPlayerStartCard(PlayArea playerArea)
-    {
-        var playerDeck = FindObjectOfType<PlayerCardDeck>();
-        if (!playerDeck) { return; }
-
-        var startingHero = playerDeck.AvilableCards.CardStats.FirstOrDefault(
-            q => q.cardType == CardType.Hero &&
-            q.suite == CardSuite.Clubs);
-        if (!startingHero) { return; }
-
-        var firstCard = playerDeck.CreateCardBasedOnStats(startingHero);
-        playerArea.AddCard(firstCard);
-    }
-
-    private void UpdateUnavialableSuites(List<CardSuite> suitesInArea)
-    {
-        var tempSuites = cardSuitesInGame.ToList();
-
-        foreach (var suite in suitesInArea)
-        {
-            tempSuites.Remove(suite);
-        }
-        UnavailableSuites = tempSuites;
     }
 
     private void CheckShouldStateTransition(CardHolder holder)
@@ -174,6 +108,27 @@ public class GameMaster : MonoBehaviour
         { newHolder = playerHand; }
 
         CurrentState.Enter(this, newHolder);
+    }
+
+    public bool IsHeroPlayedThisTurn()
+    {
+        var retval = false;
+        if (PlayerMasterComp) { retval = PlayerMasterComp.HeroPlayedThisTurn; }
+        return retval;
+    }
+
+    public List<CardSuite> GetActionCardAllowence()
+    {
+        var retval = new List<CardSuite>();
+        if (PlayerMasterComp) { retval = PlayerMasterComp.ActionCardAllowence; }
+        return retval;
+    }
+
+    public List<CardSuite> GetUnavailableSuites()
+    {
+        var retval = new List<CardSuite>();
+        if (PlayerMasterComp) { retval = PlayerMasterComp.UnavailableSuites; }
+        return retval;
     }
 
     //TODO use Observer pattern to look at the play areas and the player hand.

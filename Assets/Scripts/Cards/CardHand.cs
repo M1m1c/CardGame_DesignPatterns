@@ -77,17 +77,18 @@ public class CardHand : CardHolder
     {
         if (!selectedCard) { return; }
 
-        var GM = GameMaster.Instance;
+        var gameMaster = GameMaster.Instance;
 
         if (selectedCard.Type == CardType.Hero)
         {
-            if (GM.HeroPlayedThisTurn == true)
+            if (gameMaster.IsHeroPlayedThisTurn() == true)
             { return; }
         }
         else if (selectedCard.Type == CardType.Action)
         {
-            if (!GM.ActionCardAllowence.Contains(selectedCard.Suite) ||
-                GM.ActionCardAllowence.Count == 0)
+            var allowence = gameMaster.GetActionCardAllowence();
+            if (!allowence.Contains(selectedCard.Suite) ||
+                allowence.Count == 0)
             { return; }
         }
 

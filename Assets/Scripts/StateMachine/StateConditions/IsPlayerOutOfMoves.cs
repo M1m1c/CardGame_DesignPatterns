@@ -9,8 +9,8 @@ public class IsPlayerOutOfMoves : LinkConditionBase
         var retval = false;
         if (owner && target)
         {
-            var cantPlayHeroCard = owner.HeroPlayedThisTurn || !target.DoesHeldCardsContainType(CardType.Hero);
-            if (owner.ActionCardAllowence.Count == 0 && cantPlayHeroCard)
+            var cantPlayHeroCard = owner.IsHeroPlayedThisTurn() || !target.DoesHeldCardsContainType(CardType.Hero);
+            if (owner.GetActionCardAllowence().Count == 0 && cantPlayHeroCard)
             {
                 //Player turn is over, transition to ai turn
                 Debug.Log("Player turn over");

@@ -25,7 +25,7 @@ public class PlayerCardDeck : CardDeck
         else
         {
             cardType = CardType.Action;
-            var unavailableSuites = GameMaster.Instance.UnavailableSuites;
+            var unavailableSuites = GameMaster.Instance.GetUnavailableSuites();
             foreach (var uSuite in unavailableSuites)
             {
                 tempSuites.Remove(uSuite);
