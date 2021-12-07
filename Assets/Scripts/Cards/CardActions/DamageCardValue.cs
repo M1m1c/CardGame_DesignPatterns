@@ -18,6 +18,8 @@ public class DamageCardValue : CardAction
         var hand = parent.GetComponent<CardHand>();
         if (!hand) { return; }
 
+        hand.OnCardPlayed.Notify(owner);
+
         targetCard.ChangeCardValue(-owner.CardValue);
         hand.RemoveCard(owner);
         Destroy(owner.gameObject);

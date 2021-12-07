@@ -80,7 +80,7 @@ public class CardHand : CardHolder
 
         if (selectedCard.Type == CardType.Hero)
         {
-            if (GM.HeroPlayedThisTurn == true) 
+            if (GM.HeroPlayedThisTurn == true)
             { return; }
         }
         else if (selectedCard.Type == CardType.Action)
@@ -93,9 +93,7 @@ public class CardHand : CardHolder
         var target = hit.collider.gameObject;
         if (!target) { return; }
 
-        OnCardPlayed.Notify(selectedCard);
         selectedCard.TryDoPlayActions(target);
-
     }
 
     private void DrawCardsPhase()
