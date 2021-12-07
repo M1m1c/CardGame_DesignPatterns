@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CardHolder : MonoBehaviour
 {
+    public bool IsActive { get; set; } = false;
+
     protected float cardXOffset = 8.5f;
     protected float cardXStartPos = -17f;
     protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f,};
@@ -14,7 +16,7 @@ public class CardHolder : MonoBehaviour
 
     public bool DoesHeldCardsContainType(CardType cardType)
     {
-        return heldCards.FirstOrDefault(q => q.Type == cardType);
+        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType);
     }
 
     protected virtual void ReorganizeHeldCardPositions()
