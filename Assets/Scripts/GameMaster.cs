@@ -75,6 +75,23 @@ public class GameMaster : MonoBehaviour
     {
         if (!CurrentState) { return; }
 
+        StateObjectBase PotentialNewState = CheckStateLinks(holder);
+
+        if (PotentialNewState == null) { return; }
+        CurrentState.Exit(this, holder);
+        CurrentState = PotentialNewState;
+
+        CardHolder newHolder = null;
+        if (holder == playerHand)
+        { newHolder = AiBoard; }
+        else if (holder == AiBoard)
+        { newHolder = playerHand; }
+
+        CurrentState.Enter(this, newHolder);
+    }
+
+    private StateObjectBase CheckStateLinks(CardHolder holder)
+    {
         StateObjectBase PotentialNewState = null;
         foreach (var link in CurrentState.GetStateLinks())
         {
@@ -97,17 +114,7 @@ public class GameMaster : MonoBehaviour
             }
         }
 
-        if (PotentialNewState == null) { return; }
-        CurrentState.Exit(this, holder);
-        CurrentState = PotentialNewState;
-       
-        CardHolder newHolder = null;
-        if (holder == playerHand)
-        { newHolder = AiBoard; }
-        else if (holder == AiBoard) 
-        { newHolder = playerHand; }
-
-        CurrentState.Enter(this, newHolder);
+        return PotentialNewState;
     }
 
     public bool IsHeroPlayedThisTurn()
