@@ -403,7 +403,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 983797456283676496, guid: 5dcf7dc4623d053418df2808cab3268d, type: 3}
       propertyPath: m_Name
-      value: PlayerArea_AI
+      value: PlayArea_AI
       objectReference: {fileID: 0}
     - target: {fileID: 983797456283676497, guid: 5dcf7dc4623d053418df2808cab3268d, type: 3}
       propertyPath: m_Size.y
@@ -1193,6 +1193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30002c22ecc103b40a14f522c9d13461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentState: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
 --- !u!4 &1314122203
 Transform:
   m_ObjectHideFlags: 0
