@@ -45,8 +45,7 @@ public class GameMaster : MonoBehaviour
    
     private void SetupPlayerArea()
     {
-        var playAreas = FindObjectsOfType<PlayArea>();
-        var playerArea = playAreas.FirstOrDefault(q => q.Owner == OwnerEnum.Player);
+        var playerArea = FindObjectOfType<PlayerArea>();
         if (!playerArea) { return; }
 
         BindSuiteObserver(playerArea);
@@ -65,7 +64,7 @@ public class GameMaster : MonoBehaviour
 
     }
 
-    private void BindSuiteObserver(PlayArea playerArea)
+    private void BindSuiteObserver(PlayerArea playerArea)
     {
         suiteObserver = new Observer<List<CardSuite>>(PlayerMasterComp.UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);

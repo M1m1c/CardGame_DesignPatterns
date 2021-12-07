@@ -60,7 +60,7 @@ public class PlayerMaster : MonoBehaviour
         UnavailableSuites = tempSuites;
     }
 
-    public void AddPlayerStartCard(PlayArea playerArea)
+    public void AddPlayerStartCard(PlayerArea playerArea)
     {
         var playerDeck = FindObjectOfType<PlayerCardDeck>();
         if (!playerDeck) { return; }

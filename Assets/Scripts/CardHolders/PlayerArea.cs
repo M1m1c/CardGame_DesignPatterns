@@ -2,21 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayArea : CardHolder
+public class PlayerArea : CardArea
 {
-    [SerializeField]
-    private OwnerEnum owner;
-    public OwnerEnum Owner { get { return owner; } }
-
     public Subject<List<CardSuite>> OnUpdateAvailableSuites { get; private set; } = new Subject<List<CardSuite>>();
 
-    PlayArea()
-    {
-        heldCards = new CardBase[6];
-
-    }
-
-    public void AddCard(CardBase card)
+    public override void AddCard(CardBase card)
     {
         if (!card) { return; }
         if (currentHeldCount >= heldCards.Length) { return; }
@@ -35,7 +25,8 @@ public class PlayArea : CardHolder
         }
         OnUpdateAvailableSuites.Notify(cardSuitesOnField);
     }
-    public void RemoveCard()
+
+    public override void RemoveCard()
     {
 
     }

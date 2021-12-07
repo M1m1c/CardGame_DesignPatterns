@@ -7,10 +7,10 @@ public class AddCardToPlayArea : CardAction
     {
         if (!owner) { return; }
 
-        var playArea = target.GetComponent<PlayArea>();
-        if (!playArea) { return; }
+        var cardArea = target.GetComponent<CardArea>();
+        if (!cardArea) { return; }
 
-        if (playArea.Owner != owner.Owner) { return; }
+        if (cardArea.Owner != owner.Owner) { return; }
 
         var parent = owner.transform.parent;
         if (!parent) { return; }
@@ -21,6 +21,6 @@ public class AddCardToPlayArea : CardAction
         hand.OnCardPlayed.Notify(owner);
 
         hand.RemoveCard(owner);
-        playArea.AddCard(owner);
+        cardArea.AddCard(owner);
     }
 }
