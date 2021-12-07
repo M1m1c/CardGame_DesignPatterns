@@ -10,4 +10,6 @@ public abstract class CardDeck : MonoBehaviour
 
     public abstract CardBase CreateCard();
 
+    public abstract CardBase CreateCardBasedOnStats(CardStatsBase chosenCardStat);
+
 }

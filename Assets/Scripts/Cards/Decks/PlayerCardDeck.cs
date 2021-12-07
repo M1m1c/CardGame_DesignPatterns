@@ -54,7 +54,7 @@ public class PlayerCardDeck : CardDeck
         return retVal;
     }
 
-    public CardBase CreateCardBasedOnStats(CardStatsBase chosenCardStat)
+    public override CardBase CreateCardBasedOnStats(CardStatsBase chosenCardStat)
     {
         var cardInstance = Instantiate(chosenCardStat.cardPrefab, transform.position, transform.rotation);
         cardInstance.Setup(chosenCardStat, OwnerEnum.Player);
