@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public interface ILinkCondition
+public interface ILinkCondition<TOwner,TTarget>
 {
-    public abstract bool CheckCondition<TEntity>(TEntity entity);    
+    public abstract bool CheckCondition(TOwner owner,TTarget target);    
 }
 
-public class LinkConditionBase : MonoBehaviour,  ILinkCondition
+public class LinkConditionBase : ScriptableObject,  ILinkCondition<GameMaster,CardHolder>
 {
-    public virtual bool CheckCondition<TEntity>(TEntity entity)
+    public virtual bool CheckCondition(GameMaster owner,CardHolder target)
     {
         throw new System.NotImplementedException();
     }
