@@ -31,6 +31,8 @@ public class GameMaster : MonoBehaviour
             Instance = this;
         }
         PlayerMasterComp = GetComponent<PlayerMaster>();
+
+       
     }
 
     private void Start()
@@ -40,11 +42,17 @@ public class GameMaster : MonoBehaviour
         BindPlayerHandObservers();
 
         PlayerMasterComp.SetupCardAllowence();
+
+        var aiArea = FindObjectOfType<AIArea>();
+        if (!aiArea) { return; }
+        AiBoard = aiArea;
+        //TODO tell AI to spawn cards on their board
     }
 
    
     private void SetupPlayerArea()
     {
+    
         var playerArea = FindObjectOfType<PlayerArea>();
         if (!playerArea) { return; }
 
