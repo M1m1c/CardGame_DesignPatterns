@@ -10,7 +10,7 @@ public class CardHand : CardHolder
     public CardDeck cardDeck;
 
     public Subject<CardBase> OnCardPlayed { get; private set; } = new Subject<CardBase>();
-    public Subject<CardHand> OnCheckTurnOver { get; private set; } = new Subject<CardHand>();
+    public Subject<CardHolder> OnCheckTurnOver { get; private set; } = new Subject<CardHolder>();
 
 
     private CardBase highLightedCard = null;
@@ -28,6 +28,7 @@ public class CardHand : CardHolder
 
     void Update()
     {
+        if (IsActive == false) { return; }
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
@@ -107,6 +108,7 @@ public class CardHand : CardHolder
             }
         }
         ReorganizeHeldCardPositions();
+        IsActive = true;
     }
 
     private bool DrawCard()
