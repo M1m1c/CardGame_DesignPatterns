@@ -8,6 +8,8 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
 
+    public StateObjectBase CurrentState;
+
     public bool HeroPlayedThisTurn { get; private set; } = false;
 
     public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() {
@@ -29,7 +31,10 @@ public class GameMaster : MonoBehaviour
 
     protected Observer<List<CardSuite>> suiteObserver;
     protected Observer<CardBase> CardPlayObserver;
-    protected Observer<CardHand> TurnOverObserver;
+    protected Observer<CardHolder> TurnOverObserver;
+
+    protected CardHand playerHand;
+    protected CardHolder AiBoard;
 
     private void Awake()
     {
@@ -69,6 +74,15 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void SetupCardAllowence()
+    {
+        ActionCardAllowence = cardSuitesInGame.ToList();
+        foreach (var suite in UnavailableSuites)
+        {
+            ActionCardAllowence.Remove(suite);
+        }
+        HeroPlayedThisTurn = false;
+    }
 
     private void SetupPlayerArea()
     {
@@ -82,13 +96,13 @@ public class GameMaster : MonoBehaviour
 
     private void BindHandObservers()
     {
-        var cardHand = FindObjectOfType<CardHand>();
-        if (!cardHand) { return; }
+        playerHand = FindObjectOfType<CardHand>();
+        if (!playerHand) { return; }
         CardPlayObserver = new Observer<CardBase>(UpdateCardAllowence);
-        cardHand.OnCardPlayed.AddObserver(CardPlayObserver);
+        playerHand.OnCardPlayed.AddObserver(CardPlayObserver);
 
-        TurnOverObserver = new Observer<CardHand>(CheckIfPlayerTurnOver);
-        cardHand.OnCheckTurnOver.AddObserver(TurnOverObserver);
+        TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
+        playerHand.OnCheckTurnOver.AddObserver(TurnOverObserver);
 
     }
 
@@ -96,17 +110,6 @@ public class GameMaster : MonoBehaviour
     {
         suiteObserver = new Observer<List<CardSuite>>(UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
-    }
-
-
-    private void SetupCardAllowence()
-    {
-        ActionCardAllowence = cardSuitesInGame.ToList();
-        foreach (var suite in UnavailableSuites)
-        {
-            ActionCardAllowence.Remove(suite);
-        }
-        HeroPlayedThisTurn = false;
     }
 
     private void AddPlayerStartCard(PlayArea playerArea)
@@ -134,16 +137,43 @@ public class GameMaster : MonoBehaviour
         UnavailableSuites = tempSuites;
     }
 
-    private void CheckIfPlayerTurnOver(CardHand hand)
+    private void CheckShouldStateTransition(CardHolder holder)
     {
-        //Also should probably make call if all enemies are dead on the oposite board
-        var cantPlayHeroCard = HeroPlayedThisTurn || !hand.DoesHeldCardsContainType(CardType.Hero);
-        if (ActionCardAllowence.Count == 0 && cantPlayHeroCard)
+        if (!CurrentState) { return; }
+
+        StateObjectBase PotentialNewState = null;
+        foreach (var link in CurrentState.GetStateLinks())
         {
-            //Player turn is over, transition to ai turn
-            Debug.Log("Player turn over");
+            if (link.LinkConditions.Length == 0)
+            {
+                PotentialNewState = link.LinkedState;
+                break;
+            }
+
+            var correctConditions = 0;
+            foreach (var condition in link.LinkConditions)
+            {
+                if (condition.CheckCondition(this, holder)) { correctConditions++; }
+            }
+
+            if (correctConditions == link.LinkConditions.Length)
+            {
+                PotentialNewState = link.LinkedState;
+                break;
+            }
         }
-        //TODO use state machine to siwthc state to enemy turn
+
+        if (PotentialNewState == null) { return; }
+        CurrentState.Exit(this, holder);
+        CurrentState = PotentialNewState;
+       
+        CardHolder newHolder = null;
+        if (holder == playerHand)
+        { newHolder = AiBoard; }
+        else if (holder == AiBoard) 
+        { newHolder = playerHand; }
+
+        CurrentState.Enter(this, newHolder);
     }
 
     //TODO use Observer pattern to look at the play areas and the player hand.
