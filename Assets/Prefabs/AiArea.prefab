@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8154438891004203899}
   - component: {fileID: 8154438891004203892}
-  - component: {fileID: 6541122365594790073}
   - component: {fileID: 8974904834963273151}
   m_Layer: 0
   m_Name: AiArea
@@ -46,19 +45,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 55, y: 0.3, z: 12}
   m_Center: {x: 0, y: 0, z: -1}
---- !u!114 &6541122365594790073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8154438891004203893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3103c2859b452df4b9a5ba603f7671dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  owner: 1
 --- !u!114 &8974904834963273151
 MonoBehaviour:
   m_ObjectHideFlags: 0
