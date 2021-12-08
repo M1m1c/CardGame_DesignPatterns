@@ -37,6 +37,15 @@ public class AIArea : CardArea
     public override void RemoveCard(CardBase card)
     {
         base.RemoveCard(card);
-        OnUnitDeath.Notify(this);
+        OnTurnEnd.Notify(null);
+    }
+
+    private void AddUnitsToArea()
+    {
+        while (currentHeldCount < cardsToDrawPerRound)
+        {
+            var card = cardDeck.CreateCard();
+            AddCard(card);
+        }
     }
 }
