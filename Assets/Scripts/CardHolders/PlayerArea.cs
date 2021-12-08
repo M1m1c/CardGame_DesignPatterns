@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class PlayerArea : CardArea
         if (!card) { return; }
         if (currentHeldCount >= heldCards.Length) { return; }
         cardXStartPos = cardXPosStarts[currentHeldCount];
-        heldCards[currentHeldCount] = card;
+        heldCards[Array.IndexOf(heldCards, null)] = card;
         currentHeldCount++;
         ReorganizeHeldCardPositions();
 
@@ -25,10 +26,4 @@ public class PlayerArea : CardArea
         }
         OnUpdateAvailableSuites.Notify(cardSuitesOnField);
     }
-
-    public override void RemoveCard()
-    {
-
-    }
-
 }

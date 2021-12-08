@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class CardArea : CardHolder
@@ -15,6 +17,17 @@ public abstract class CardArea : CardHolder
 
     public abstract void AddCard(CardBase card);
 
-    public abstract void RemoveCard();
+    public virtual void RemoveCard(CardBase card)
+    {
+        if (!card) { return; }
+        if (!heldCards.Contains(card)) { return; }
+
+        var index=Array.IndexOf(heldCards, card);
+        heldCards[index] = null;
+        Destroy(card.gameObject);
+        currentHeldCount--;
+        cardXStartPos = cardXPosStarts[Mathf.Clamp(currentHeldCount - 1, 0, cardXPosStarts.Length - 1)];
+        ReorganizeHeldCardPositions();
+    }
   
 }
