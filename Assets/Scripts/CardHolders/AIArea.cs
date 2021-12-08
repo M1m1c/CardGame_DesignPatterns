@@ -1,28 +1,68 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIArea : CardArea
 {
-    public Subject<CardHolder> OnUnitDeath { get; private set; } = new Subject<CardHolder>();
+    public Subject<CardHolder> OnTurnEnd { get; private set; } = new Subject<CardHolder>();
 
     public int cardsToDrawPerRound { get; set; } = 3;
 
     public CardDeck cardDeck;
+
+    public PlayerArea playerArea;
 
     private void Start()
     {
         AddUnitsToArea();
     }
 
-    private void AddUnitsToArea()
+    public void StartAttackingPlayer()
     {
-        while (currentHeldCount < cardsToDrawPerRound)
+        if (!playerArea) { return; }
+        if (!IsActive) { return; }
+        StartCoroutine(AttackSequence());
+    }
+
+    private IEnumerator AttackSequence()
+    {
+        for (int i = 0; i < heldCards.Length; i++)
         {
-            var card = cardDeck.CreateCard();
-            AddCard(card);
+            var card = heldCards[i];
+            if (!card) { continue; }
+            yield return StartCoroutine(AttackWithCard(card));
         }
+        StopAllCoroutines();
+        OnTurnEnd.Notify(this);
+    }
+
+    private IEnumerator AttackWithCard(CardBase card)
+    {
+        if (!card) { yield break; }
+
+        CardBase target = null;
+        while (target == null)
+        {
+            target = playerArea.GetCard(UnityEngine.Random.Range(0, playerArea.GetLength()));
+        }
+
+        card.TryDoSelectActions(target.gameObject);
+
+        var line = card.GetComponent<LineRenderer>();
+        if (line) { line.SetPosition(1, target.transform.position); }
+
+        card.TryDoPlayActions(target.gameObject);
+
+        SetCardPosAndSize(
+            card,
+            card.SlotedPosition + new Vector3(0f, 0f, -2f),
+            card.OriginalSize + new Vector3(0.2f, 0.2f, 0.2f));
+
+        yield return new WaitForSeconds(1f);
+
+        SetCardPosAndSize(card, card.SlotedPosition, card.OriginalSize);
+        card.TryDoDeSelectActions(target.gameObject);
+
     }
 
     public override void AddCard(CardBase card)
