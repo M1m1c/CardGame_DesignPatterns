@@ -11,6 +11,8 @@ public interface IState
 [CreateAssetMenu(fileName ="NewState",menuName ="State_Base")]
 public class StateObjectBase : ScriptableObject ,IState
 {
+    public int HolderId;
+
     [SerializeField] protected StateAction[] EntryActions;
 
     [SerializeField] protected StateAction[] ExitActions;

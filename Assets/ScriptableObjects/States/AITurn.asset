@@ -18,5 +18,8 @@ MonoBehaviour:
   ExitActions:
   - {fileID: 11400000, guid: 4d9359006fe89014eae236a048aa9f50, type: 2}
   stateLinks:
+  - linkedState: {fileID: 11400000, guid: 42705c1e9802d094f8579888ef8627f0, type: 2}
+    linkConditions:
+    - {fileID: 11400000, guid: d0c6b6e7bacfc6048b43cc4f5f447749, type: 2}
   - linkedState: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
     linkConditions: []
