@@ -9,7 +9,8 @@ public class GameMaster : MonoBehaviour
 
     public StateObjectBase CurrentState;
 
-    protected PlayerMaster PlayerMasterComp;
+    protected PlayerMaster playerMasterComp;
+    protected StateInitialiser stateInitialiserComp;
 
     protected Observer<List<CardSuite>> suiteObserver;
     protected Observer<CardBase> CardPlayObserver;
@@ -31,7 +32,8 @@ public class GameMaster : MonoBehaviour
         {
             Instance = this;
         }
-        PlayerMasterComp = GetComponent<PlayerMaster>();
+        playerMasterComp = GetComponent<PlayerMaster>();
+        stateInitialiserComp = GetComponent<StateInitialiser>();
 
        
     }
@@ -49,7 +51,7 @@ public class GameMaster : MonoBehaviour
         AiArea = aiArea;
         AiArea.OnTurnEnd.AddObserver(TurnOverObserver);
 
-        currentHolder = playerHand;
+        currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
     }
 
 
@@ -60,47 +62,41 @@ public class GameMaster : MonoBehaviour
         if (!playerArea) { return; }
 
         BindSuiteObserver(playerArea);
-        PlayerMasterComp.AddPlayerStartCard(playerArea);
+        playerMasterComp.AddPlayerStartCard(playerArea);
     }
 
     private void BindPlayerHandObservers()
     {
         playerHand = FindObjectOfType<CardHand>();
         if (!playerHand) { return; }
-        CardPlayObserver = new Observer<CardBase>(PlayerMasterComp.UpdateCardAllowence);
+        CardPlayObserver = new Observer<CardBase>(playerMasterComp.UpdateCardAllowence);
         playerHand.OnCardPlayed.AddObserver(CardPlayObserver);
 
         TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
-        PlayerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
+        playerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
 
     }
 
     private void BindSuiteObserver(PlayerArea playerArea)
     {
-        suiteObserver = new Observer<List<CardSuite>>(PlayerMasterComp.UpdateUnavialableSuites);
+        suiteObserver = new Observer<List<CardSuite>>(playerMasterComp.UpdateUnavialableSuites);
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
     }
 
-    private void CheckShouldStateTransition(CardHolder holder)
+    private void CheckShouldStateTransition(CardHolder sender)
     {
         if (!CurrentState) { return; }
 
-        if (!holder) { holder = currentHolder; }
+        if (!sender) { sender = currentHolder; }
 
-        StateObjectBase PotentialNewState = CheckStateLinks(holder);
+        StateObjectBase PotentialNewState = CheckStateLinks(sender);
 
         if (PotentialNewState == null) { return; }
-        CurrentState.Exit(this, holder);
+        CurrentState.Exit(this, currentHolder);
         CurrentState = PotentialNewState;
 
-        CardHolder newHolder = null;
-        if (holder == playerHand)
-        { newHolder = AiArea; }
-        else if (holder == AiArea)
-        { newHolder = playerHand; }
-
-        currentHolder = newHolder;
-        CurrentState.Enter(this, newHolder);
+        currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
+        CurrentState.Enter(this, currentHolder);
     }
 
     private StateObjectBase CheckStateLinks(CardHolder holder)
@@ -133,27 +129,27 @@ public class GameMaster : MonoBehaviour
     public bool IsHeroPlayedThisTurn()
     {
         var retval = false;
-        if (PlayerMasterComp) { retval = PlayerMasterComp.HeroPlayedThisTurn; }
+        if (playerMasterComp) { retval = playerMasterComp.HeroPlayedThisTurn; }
         return retval;
     }
 
     public List<CardSuite> GetActionCardAllowence()
     {
         var retval = new List<CardSuite>();
-        if (PlayerMasterComp) { retval = PlayerMasterComp.ActionCardAllowence; }
+        if (playerMasterComp) { retval = playerMasterComp.ActionCardAllowence; }
         return retval;
     }
 
     public List<CardSuite> GetUnavailableSuites()
     {
         var retval = new List<CardSuite>();
-        if (PlayerMasterComp) { retval = PlayerMasterComp.UnavailableSuites; }
+        if (playerMasterComp) { retval = playerMasterComp.UnavailableSuites; }
         return retval;
     }
 
     public void SetupPlayerTurn()
     {
-        PlayerMasterComp.SetupCardAllowence();
+        playerMasterComp.SetupCardAllowence();
     }
 
     //TODO use Observer pattern to look at the play areas and the player hand.
