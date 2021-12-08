@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c487a001adc460043a6e40d2eecb00c6, type: 3}
-  m_Name: SpadesAction
+  m_Name: Action_Hearts
   m_EditorClassIdentifier: 
-  DisplayName: Spades
+  DisplayName: Hearts
   Value: 0
-  suite: 2
+  suite: 4
   cardType: 2
   Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
   cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
