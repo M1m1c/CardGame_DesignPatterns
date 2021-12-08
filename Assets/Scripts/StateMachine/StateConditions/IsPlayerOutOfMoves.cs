@@ -7,7 +7,7 @@ public class IsPlayerOutOfMoves : LinkConditionBase
     public override bool CheckCondition(GameMaster owner, CardHolder target)
     {
         var retval = false;
-        if (owner && target)
+        if (owner && target && target is CardHand)
         {
             var cantPlayHeroCard = owner.IsHeroPlayedThisTurn() || !target.DoesHeldCardsContainType(CardType.Hero);
 
