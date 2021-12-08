@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4992542350933896543}
-  - component: {fileID: 4992542350933896542}
+  - component: {fileID: 2936674780308860873}
   m_Layer: 0
   m_Name: AICardDeck
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &4992542350933896542
+--- !u!114 &2936674780308860873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4992542350933896540}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c405a62eebc790d4e8e27b1eef8f895a, type: 3}
+  m_Script: {fileID: 11500000, guid: c9f1ba2890b60a94693ae3cac6d03d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvilableCards: {fileID: 11400000, guid: 0def3148d860f064799ea02b76718e72, type: 2}
+  AvilableCards: {fileID: 11400000, guid: 53f4511d890a4064cb0c9cabf053f990, type: 2}
+  deckSize: 40
 --- !u!1 &4992542351772105655
 GameObject:
   m_ObjectHideFlags: 0
