@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class CardPlayable : CardBase
@@ -43,19 +42,7 @@ public class CardPlayable : CardBase
 
         if (cardValue <= 0)
         {
-            Destroy(gameObject);
+            TryDoLeaveActions(transform.parent.gameObject);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
