@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b8244881029caf45a2f39e79b778575, type: 3}
   m_Name: RoundOver
   m_EditorClassIdentifier: 
+  HolderId: 0
   EntryActions:
   - {fileID: 11400000, guid: 4d9359006fe89014eae236a048aa9f50, type: 2}
   - {fileID: 11400000, guid: d58fa6d8a2ba3324ea0472d9a7191cfc, type: 2}
@@ -19,4 +20,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4d9359006fe89014eae236a048aa9f50, type: 2}
   stateLinks:
   - linkedState: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
-    linkConditions: []
+    linkConditions:
+    - {fileID: 11400000, guid: ead4083c5bcb0e04595cc49600590ba2, type: 2}
