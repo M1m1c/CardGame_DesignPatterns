@@ -10,6 +10,8 @@ public abstract class CardArea : CardHolder
     private OwnerEnum owner;
     public OwnerEnum Owner { get { return owner; } }
 
+    public Subject<CardHolder> OnTurnEnd { get; private set; } = new Subject<CardHolder>();
+
     public CardArea()
     {
         heldCards = new CardBase[6];
@@ -22,12 +24,17 @@ public abstract class CardArea : CardHolder
         if (!card) { return; }
         if (!heldCards.Contains(card)) { return; }
 
-        var index=Array.IndexOf(heldCards, card);
+        var index = Array.IndexOf(heldCards, card);
         heldCards[index] = null;
         Destroy(card.gameObject);
         currentHeldCount--;
         cardXStartPos = cardXPosStarts[Mathf.Clamp(currentHeldCount - 1, 0, cardXPosStarts.Length - 1)];
         ReorganizeHeldCardPositions();
+
+        if (currentHeldCount <= 0)
+        {
+            OnTurnEnd.Notify(this);
+        }
     }
-  
+
 }
