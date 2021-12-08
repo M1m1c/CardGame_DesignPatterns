@@ -18,9 +18,12 @@ MonoBehaviour:
   cardType: 4
   Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
   cardPrefab: {fileID: -6950152471408514677, guid: ea7d011e6ee1fc64fa358a4c8bac2339, type: 3}
-  SelectedActions: []
-  DeSelectedActions: []
-  PlayActions: []
+  SelectedActions:
+  - {fileID: 11400000, guid: 5ca6636d11a9f94429453f90c3afec45, type: 2}
+  DeSelectedActions:
+  - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
+  PlayActions:
+  - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
   DrawActions: []
   LeaveActions:
   - {fileID: 11400000, guid: ad49d5b2892c5e6469dd63d16af4f5fa, type: 2}
