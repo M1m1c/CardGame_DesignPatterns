@@ -39,13 +39,14 @@ public class AIArea : CardArea
     private IEnumerator AttackWithCard(CardBase card)
     {
         if (!card) { yield break; }
-
+        if (playerArea.GetCurrentHeldCards() <= 0) { yield break; }
         CardBase target = null;
         while (target == null)
         {
             target = playerArea.GetCard(UnityEngine.Random.Range(0, playerArea.GetLength()));
         }
 
+     
         card.TryDoSelectActions(target.gameObject);
 
         var line = card.GetComponent<LineRenderer>();
@@ -61,8 +62,7 @@ public class AIArea : CardArea
         yield return new WaitForSeconds(1f);
 
         SetCardPosAndSize(card, card.SlotedPosition, card.OriginalSize);
-        card.TryDoDeSelectActions(target.gameObject);
-
+        card.TryDoDeSelectActions(null);
     }
 
     public override void AddCard(CardBase card)
