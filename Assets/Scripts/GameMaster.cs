@@ -16,7 +16,7 @@ public class GameMaster : MonoBehaviour
     protected Observer<CardHolder> TurnOverObserver;
 
     protected CardHand playerHand;
-    protected CardHolder AiBoard;
+    protected AIArea AiArea;
 
    
 
@@ -45,8 +45,8 @@ public class GameMaster : MonoBehaviour
 
         var aiArea = FindObjectOfType<AIArea>();
         if (!aiArea) { return; }
-        AiBoard = aiArea;
-        //TODO tell AI to spawn cards on their board
+        AiArea = aiArea;
+        AiArea.OnUnitDeath.AddObserver(TurnOverObserver);
     }
 
    
@@ -90,8 +90,8 @@ public class GameMaster : MonoBehaviour
 
         CardHolder newHolder = null;
         if (holder == playerHand)
-        { newHolder = AiBoard; }
-        else if (holder == AiBoard)
+        { newHolder = AiArea; }
+        else if (holder == AiArea)
         { newHolder = playerHand; }
 
         CurrentState.Enter(this, newHolder);
