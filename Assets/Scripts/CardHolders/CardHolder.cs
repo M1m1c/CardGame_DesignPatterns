@@ -12,12 +12,7 @@ public class CardHolder : MonoBehaviour
     protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f, };
 
     protected int currentHeldCount = 0;
-    protected CardBase[] heldCards = new CardBase[5];
-
-    public bool DoesHeldCardsContainType(CardType cardType)
-    {
-        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType);
-    }
+    protected CardBase[] heldCards = new CardBase[5]; 
 
     protected virtual void ReorganizeHeldCardPositions()
     {
@@ -60,5 +55,36 @@ public class CardHolder : MonoBehaviour
             }
         }
         return retval;
+    }
+
+    protected void SetCardPosAndSize(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
+    {
+        card.transform.position = posToSet;
+        card.transform.localScale = sizeToSet;
+    }
+
+    public bool DoesHeldCardsContainType(CardType cardType)
+    {
+        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType);
+    }
+
+    public bool DoesHeldCardsContainType(CardType cardType, CardSuite cardSuite)
+    {
+        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType && q.Suite==cardSuite);
+    }
+
+    public CardBase GetCard(int index)
+    {
+        return heldCards[index];
+    }
+
+    public int GetLength()
+    {
+        return heldCards.Length;
+    }
+
+    public int GetCurrentHeldCards()
+    {
+        return currentHeldCount;
     }
 }
