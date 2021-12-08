@@ -10,7 +10,6 @@ public class CardHand : CardHolder
     public CardDeck cardDeck;
 
     public Subject<CardBase> OnCardPlayed { get; private set; } = new Subject<CardBase>();
-    public Subject<CardHolder> OnCheckTurnOver { get; private set; } = new Subject<CardHolder>();
 
 
     private CardBase highLightedCard = null;
@@ -42,13 +41,28 @@ public class CardHand : CardHolder
         {
             AttemptPlayCard();
             SelectCardInHand();
-            OnCheckTurnOver.Notify(this);
+            //OnCheckTurnOver.Notify(this);
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             DeSelectCardInHand();
         }
     }
+
+    public void DrawCardsPhase()
+    {
+        while (currentHeldCount < heldCards.Length)
+        {
+            if (DrawCard())
+            {
+                cardXStartPos = cardXPosStarts[currentHeldCount];
+                currentHeldCount++;
+            }
+        }
+        ReorganizeHeldCardPositions();
+        IsActive = true;
+    }
+
 
     public void RemoveCard(CardBase tempSelection)
     {
@@ -67,9 +81,10 @@ public class CardHand : CardHolder
     {
         if (!card) { return; }
 
-        var isInHand = heldCards.FirstOrDefault(q => q == card);
+        var isInHand = heldCards.Contains(card);
         if (!isInHand) { return; }
-
+        RemoveCard(card);
+        OnCardPlayed.Notify(card);
         Destroy(card.gameObject);
     }
 
@@ -96,20 +111,6 @@ public class CardHand : CardHolder
         if (!target) { return; }
 
         selectedCard.TryDoPlayActions(target);
-    }
-
-    private void DrawCardsPhase()
-    {
-        while (currentHeldCount < heldCards.Length)
-        {
-            if (DrawCard())
-            {
-                cardXStartPos = cardXPosStarts[currentHeldCount];
-                currentHeldCount++;
-            }
-        }
-        ReorganizeHeldCardPositions();
-        IsActive = true;
     }
 
     private bool DrawCard()
@@ -206,9 +207,5 @@ public class CardHand : CardHolder
         highLightedCard = card;
     }
 
-    private void SetCardPosAndSize(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
-    {
-        card.transform.position = posToSet;
-        card.transform.localScale = sizeToSet;
-    }
+   
 }

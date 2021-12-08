@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerMaster : MonoBehaviour
 {
+
+
+    public Subject<CardHolder> OnCheckTurnOver { get; private set; } = new Subject<CardHolder>();
+
     public bool HeroPlayedThisTurn { get; private set; } = false;
 
     public List<CardSuite> UnavailableSuites { get; private set; } = new List<CardSuite>() {
@@ -38,15 +42,18 @@ public class PlayerMaster : MonoBehaviour
         if (cardToRemove.Type == CardType.Hero)
         {
             HeroPlayedThisTurn = true;
-            return;
         }
-
-        var suite = cardToRemove.Suite;
-
-        if (ActionCardAllowence.Contains(suite))
+        else
         {
-            ActionCardAllowence.Remove(suite);
+            var suite = cardToRemove.Suite;
+
+            if (ActionCardAllowence.Contains(suite))
+            {
+                ActionCardAllowence.Remove(suite);
+            }
         }
+
+        OnCheckTurnOver.Notify(null);
     }
 
     public void UpdateUnavialableSuites(List<CardSuite> suitesInArea)
