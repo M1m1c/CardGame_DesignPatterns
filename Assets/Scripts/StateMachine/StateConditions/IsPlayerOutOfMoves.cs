@@ -10,10 +10,22 @@ public class IsPlayerOutOfMoves : LinkConditionBase
         if (owner && target)
         {
             var cantPlayHeroCard = owner.IsHeroPlayedThisTurn() || !target.DoesHeldCardsContainType(CardType.Hero);
-            if (owner.GetActionCardAllowence().Count == 0 && cantPlayHeroCard)
+
+            var actions = owner.GetActionCardAllowence();
+            var cantPlayActionCard = actions.Count == 0;
+            if (!cantPlayActionCard)
+            {
+                foreach (var suite in owner.GetActionCardAllowence())
+                {
+                    cantPlayActionCard = !target.DoesHeldCardsContainType(CardType.Action, suite);
+                    if (cantPlayActionCard == false) { break; }
+                }
+            }
+
+            if (cantPlayHeroCard && cantPlayActionCard)
             {
                 //Player turn is over, transition to ai turn
-                Debug.Log("Player turn over");
+                //Debug.Log("Player turn over");
                 retval = true;
             }
         }
