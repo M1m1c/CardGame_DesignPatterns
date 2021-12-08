@@ -151,6 +151,11 @@ public class GameMaster : MonoBehaviour
         return retval;
     }
 
+    public void SetupPlayerTurn()
+    {
+        PlayerMasterComp.SetupCardAllowence();
+    }
+
     //TODO use Observer pattern to look at the play areas and the player hand.
     //use state pattern to deal with whos turn it is.
     //If player cant play any more cards, transition AI turn.
