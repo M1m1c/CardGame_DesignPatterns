@@ -25,4 +25,5 @@ MonoBehaviour:
   PlayActions:
   - {fileID: 11400000, guid: b68a43608d4e90a42ba60af2fec4b21f, type: 2}
   DrawActions: []
-  LeaveActions: []
+  LeaveActions:
+  - {fileID: 11400000, guid: ad49d5b2892c5e6469dd63d16af4f5fa, type: 2}
