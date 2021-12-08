@@ -9,7 +9,7 @@ public class CardHolder : MonoBehaviour
 
     protected float cardXOffset = 8.5f;
     protected float cardXStartPos = -17f;
-    protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f,};
+    protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f, };
 
     protected int currentHeldCount = 0;
     protected CardBase[] heldCards = new CardBase[5];
@@ -27,15 +27,38 @@ public class CardHolder : MonoBehaviour
         {
 
             var card = heldCards[i];
-            if (!card) { continue; }
-            if (card.transform.parent != transform) 
+            if (!card)
+            {
+                card = MoveNearestCardToIndex(i);
+                if (!card) { break; }                
+            }
+
+            if (card.transform.parent != transform)
             {
                 card.transform.parent = transform;
             }
 
-            card.transform.position = this.transform.position + new Vector3(pos + xOffset, 0f, 0f);           
+            card.transform.position = this.transform.position + new Vector3(pos + xOffset, 0f, 0f);
             card.SlotedPosition = heldCards[i].transform.position;
             xOffset += cardXOffset;
         }
+    }
+
+    private CardBase MoveNearestCardToIndex(int i)
+    {
+        CardBase retval = null;
+        for (int q = i; q < heldCards.Length; q++)
+        {
+            var cardToMove = heldCards[q];
+            if (cardToMove)
+            {
+                //card = cardToMove;
+                retval = cardToMove;
+                heldCards[i] = cardToMove;
+                heldCards[q] = null;
+                break;
+            }
+        }
+        return retval;
     }
 }
