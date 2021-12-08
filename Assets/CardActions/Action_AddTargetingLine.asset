@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df8a6629cdf794408f7f279ab20ad56, type: 3}
   m_Name: Action_AddTargetingLine
   m_EditorClassIdentifier: 
+  LineColor: {r: 0.17856887, g: 0.2044126, b: 0.7169812, a: 1}
+  LineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
