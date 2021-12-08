@@ -15,13 +15,21 @@ public class DamageCardValue : CardAction
         var parent = owner.transform.parent;
         if (!parent) { return; }
 
+        if (parent == targetCard.transform.parent) { return; }
+
+        var reductionValue = owner.CardValue;
+
+        var unitCard = owner.GetComponent<UnitCardPlayable>();
+        if (unitCard) { reductionValue = unitCard.DamageValue; }
+
+        targetCard.ChangeCardValue(-reductionValue);
+
+        if (owner.Type != CardType.Action) { return; }
+
         var hand = parent.GetComponent<CardHand>();
-        if (!hand) { return; }
-
-        hand.OnCardPlayed.Notify(owner);
-
-        targetCard.ChangeCardValue(-owner.CardValue);
-        hand.RemoveCard(owner);
-        Destroy(owner.gameObject);
+        if (hand)
+        {
+            hand.DestroyCard(owner);
+        }
     }
 }
