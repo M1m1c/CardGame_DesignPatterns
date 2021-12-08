@@ -5,13 +5,13 @@ using UnityEngine;
 public class UnitCardPlayable : CardPlayable
 {
     public TextMesh DamageText;
-    protected int damageValue = 0;
+    public int DamageValue { get; private set; }
 
     public override void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum)
     {
         base.Setup(cardStats, ownerEnum);
 
-        damageValue = cardStats.Value / 2;
-        DamageText.text = "" + damageValue;
+        DamageValue = cardStats.Value / 2;
+        DamageText.text = "" + DamageValue;
     }
 }
