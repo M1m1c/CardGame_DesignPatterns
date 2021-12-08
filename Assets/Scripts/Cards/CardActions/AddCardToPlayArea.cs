@@ -18,9 +18,9 @@ public class AddCardToPlayArea : CardAction
         var hand = parent.GetComponent<CardHand>();
         if (!hand) { return; }
 
-        hand.OnCardPlayed.Notify(owner);
 
         hand.RemoveCard(owner);
         cardArea.AddCard(owner);
+        hand.OnCardPlayed.Notify(owner);
     }
 }
