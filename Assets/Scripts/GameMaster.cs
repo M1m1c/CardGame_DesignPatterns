@@ -17,10 +17,6 @@ public class GameMaster : MonoBehaviour
     protected Observer<CardHolder> TurnOverObserver;
 
     protected CardHolder currentHolder;
-    protected CardHand playerHand;
-    protected AIArea AiArea;
-
-   
 
     private void Awake()
     {
@@ -40,7 +36,11 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        SetupPlayerArea();
+        var playerArea = FindObjectOfType<PlayerArea>();
+        if (!playerArea) { return; }
+       
+
+        SetupPlayerArea(playerArea);
 
         BindPlayerHandObservers();
 
@@ -48,33 +48,31 @@ public class GameMaster : MonoBehaviour
 
         var aiArea = FindObjectOfType<AIArea>();
         if (!aiArea) { return; }
-        AiArea = aiArea;
-        AiArea.OnTurnEnd.AddObserver(TurnOverObserver);
+        TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
+        aiArea.OnTurnEnd.AddObserver(TurnOverObserver);
+        playerArea.OnTurnEnd.AddObserver(TurnOverObserver);
+        playerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
 
         currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
     }
 
 
-    private void SetupPlayerArea()
+    private void SetupPlayerArea(PlayerArea playerArea)
     {
     
-        var playerArea = FindObjectOfType<PlayerArea>();
-        if (!playerArea) { return; }
+     
 
         BindSuiteObserver(playerArea);
         playerMasterComp.AddPlayerStartCard(playerArea);
+       
     }
 
     private void BindPlayerHandObservers()
     {
-        playerHand = FindObjectOfType<CardHand>();
+        var playerHand = FindObjectOfType<CardHand>();
         if (!playerHand) { return; }
         CardPlayObserver = new Observer<CardBase>(playerMasterComp.UpdateCardAllowence);
         playerHand.OnCardPlayed.AddObserver(CardPlayObserver);
-
-        TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
-        playerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
-
     }
 
     private void BindSuiteObserver(PlayerArea playerArea)
@@ -85,6 +83,7 @@ public class GameMaster : MonoBehaviour
 
     private void CheckShouldStateTransition(CardHolder sender)
     {
+       
         if (!CurrentState) { return; }
 
         if (!sender) { sender = currentHolder; }
@@ -92,11 +91,14 @@ public class GameMaster : MonoBehaviour
         StateObjectBase PotentialNewState = CheckStateLinks(sender);
 
         if (PotentialNewState == null) { return; }
+        if (PotentialNewState == CurrentState) { return; }
+
         CurrentState.Exit(this, currentHolder);
         CurrentState = PotentialNewState;
-
         currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
         CurrentState.Enter(this, currentHolder);
+
+        Debug.Log(CurrentState.name);
     }
 
     private StateObjectBase CheckStateLinks(CardHolder holder)
