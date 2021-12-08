@@ -48,6 +48,7 @@ public class Subject<TEventData>
 
     public void AddObserver(Observer<TEventData> observerToAdd)
     {
+        if (observerToAdd == null) { return; }
         observerToAdd.Next = head;
         head = observerToAdd;
     }
