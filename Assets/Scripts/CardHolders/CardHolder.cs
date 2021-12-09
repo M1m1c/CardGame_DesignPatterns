@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ public class CardHolder : MonoBehaviour
         ReorganizeHeldCardPositions();
     }
 
-   
+
     //Moves heldCards so that they line up correctly on screen,
     //also pushes cards to lower positioned indecies that are empty.
     protected virtual void ReorganizeHeldCardPositions()
@@ -48,7 +49,7 @@ public class CardHolder : MonoBehaviour
             if (!card)
             {
                 card = MoveNearestCardToIndex(i);
-                if (!card) { break; }                
+                if (!card) { break; }
             }
 
             if (card.transform.parent != transform)
@@ -106,7 +107,7 @@ public class CardHolder : MonoBehaviour
 
     public bool DoesHeldCardsContainType(CardType cardType, CardSuite cardSuite)
     {
-        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType && q.Suite==cardSuite);
+        return heldCards.FirstOrDefault(q => q != null && q.Type == cardType && q.Suite == cardSuite);
     }
 
     public CardBase GetCard(int index)
@@ -122,5 +123,26 @@ public class CardHolder : MonoBehaviour
     public int GetCurrentHeldCards()
     {
         return currentHeldCount;
+    }
+
+    public List<CardBase> GetAdjacentCards(CardBase card)
+    {
+        var retval = new List<CardBase>();
+        if (heldCards.Contains(card))
+        {
+            var index = Array.IndexOf(heldCards, card);
+            var rightIndex = index + 1;
+            if (rightIndex < heldCards.Length)
+            {
+                retval.Add(heldCards[rightIndex]);
+            }
+
+            var leftIndex = index - 1;
+            if (leftIndex > -1)
+            {
+                retval.Add(heldCards[leftIndex]);
+            }
+        }
+        return retval;
     }
 }
