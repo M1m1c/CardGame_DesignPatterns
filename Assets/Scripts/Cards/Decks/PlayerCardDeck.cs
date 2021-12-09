@@ -38,8 +38,10 @@ public class PlayerCardDeck : CardDeck
             }
         }
 
+
         var chosenSuite = tempSuites[Random.Range(0, tempSuites.Count)];
-        var chosenCardStat = AvilableCards.CardStats.FirstOrDefault(q => q.cardType == cardType && q.suite == chosenSuite);
+        var chosenCardStat = AvilableCards.CardStats.
+            FirstOrDefault(q => q != null && q.cardType == cardType && q.suite == chosenSuite);
 
         if (chosenCardStat != null && chosenCardStat.suite != CardSuite.None)
         {
