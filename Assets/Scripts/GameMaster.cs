@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,7 +6,7 @@ using UnityEngine.UI;
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
-   
+
 
     public StateObjectBase CurrentState;
 
@@ -20,8 +19,8 @@ public class GameMaster : MonoBehaviour
     protected StateInitialiser stateInitialiserComp;
 
     protected Observer<List<CardSuite>> suiteObserver;
-    protected Observer<CardBase> CardPlayObserver;
-    protected Observer<CardHolder> TurnOverObserver;
+    protected Observer<CardBase> cardPlayObserver;
+    protected Observer<CardHolder> turnOverObserver;
 
     protected CardHolder currentHolder;
 
@@ -43,47 +42,23 @@ public class GameMaster : MonoBehaviour
         playerMasterComp = GetComponent<PlayerMaster>();
         stateInitialiserComp = GetComponent<StateInitialiser>();
 
-       
+
     }
 
     private void Start()
     {
         playerArea = FindObjectOfType<PlayerArea>();
         if (!playerArea) { return; }
-       
-
-        SetupPlayerArea(playerArea);
-
-        BindPlayerHandObservers();
-
-        //SetupPlayerTurn();
-
         aIArea = FindObjectOfType<AIArea>();
         if (!aIArea) { return; }
-        TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
-        aIArea.OnTurnEnd.AddObserver(TurnOverObserver);
-        playerArea.OnTurnEnd.AddObserver(TurnOverObserver);
-        playerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
 
-        currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
+        BindSuiteObserver(playerArea);
+        playerMasterComp.AddPlayerStartCard(playerArea);
 
+        BindPlayerHandObservers();
+        BindTurnOverObserver();
         SetupPlayerTurn();
         CurrentState.Enter(this, null);
-    }
-
-
-    private void SetupPlayerArea(PlayerArea playerArea)
-    {
-        BindSuiteObserver(playerArea);
-        playerMasterComp.AddPlayerStartCard(playerArea);    
-    }
-
-    private void BindPlayerHandObservers()
-    {
-        var playerHand = FindObjectOfType<CardHand>();
-        if (!playerHand) { return; }
-        CardPlayObserver = new Observer<CardBase>(playerMasterComp.UpdateCardAllowence);
-        playerHand.OnCardPlayed.AddObserver(CardPlayObserver);
     }
 
     private void BindSuiteObserver(PlayerArea playerArea)
@@ -92,6 +67,23 @@ public class GameMaster : MonoBehaviour
         playerArea.OnUpdateAvailableSuites.AddObserver(suiteObserver);
     }
 
+    private void BindPlayerHandObservers()
+    {
+        var playerHand = FindObjectOfType<CardHand>();
+        if (!playerHand) { return; }
+        cardPlayObserver = new Observer<CardBase>(playerMasterComp.UpdateCardAllowence);
+        playerHand.OnCardPlayed.AddObserver(cardPlayObserver);
+    }
+
+    private void BindTurnOverObserver()
+    {
+        turnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
+        aIArea.OnTurnEnd.AddObserver(turnOverObserver);
+        playerArea.OnTurnEnd.AddObserver(turnOverObserver);
+        playerMasterComp.OnCheckTurnOver.AddObserver(turnOverObserver);
+    }
+
+    //gets a reference to a new state if it is viable, then swithces to it
     private void CheckShouldStateTransition(CardHolder sender)
     {
 
@@ -104,15 +96,52 @@ public class GameMaster : MonoBehaviour
         if (PotentialNewState == null) { return; }
         if (PotentialNewState == CurrentState) { return; }
 
+        SwitchState(PotentialNewState);
+    }
+
+    //Checks the link condition of each of this states links using the sender as the target of those checks
+    //returns a the state a link leads to if the conditions are all true
+    private StateObjectBase CheckStateLinks(CardHolder sender)
+    {
+        StateObjectBase PotentialNewState = null;
+        foreach (var link in CurrentState.GetStateLinks())
+        {
+            if (link.LinkConditions.Length == 0)
+            {
+                PotentialNewState = link.LinkedState;
+                break;
+            }
+
+            var correctConditions = 0;
+            foreach (var condition in link.LinkConditions)
+            {
+                if (condition.CheckCondition(this, sender)) { correctConditions++; }
+            }
+
+            if (correctConditions == link.LinkConditions.Length)
+            {
+                PotentialNewState = link.LinkedState;
+                break;
+            }
+        }
+
+        return PotentialNewState;
+    }
+
+    //exits the current state and enters a new state
+    private void SwitchState(StateObjectBase PotentialNewState)
+    {
         CurrentState.Exit(this, currentHolder);
         CurrentState = PotentialNewState;
         currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
         CurrentState.Enter(this, currentHolder);
     }
 
+
+
+    //setsup the correct menu depending on who lost the round
     public void RoundOver()
     {
-        //Move this to state action
         if (CurrentState.HolderId == 0)
         {
             if (playerArea.GetCurrentHeldCards() <= 0)
@@ -141,33 +170,6 @@ public class GameMaster : MonoBehaviour
         aIArea.AddUnitsToArea();
     }
 
-    private StateObjectBase CheckStateLinks(CardHolder holder)
-    {
-        StateObjectBase PotentialNewState = null;
-        foreach (var link in CurrentState.GetStateLinks())
-        {
-            if (link.LinkConditions.Length == 0)
-            {
-                PotentialNewState = link.LinkedState;
-                break;
-            }
-
-            var correctConditions = 0;
-            foreach (var condition in link.LinkConditions)
-            {
-                if (condition.CheckCondition(this, holder)) { correctConditions++; }
-            }
-
-            if (correctConditions == link.LinkConditions.Length)
-            {
-                PotentialNewState = link.LinkedState;
-                break;
-            }
-        }
-
-        return PotentialNewState;
-    }
-
     public bool IsHeroPlayedThisTurn()
     {
         var retval = false;
@@ -194,13 +196,4 @@ public class GameMaster : MonoBehaviour
         playerMasterComp.SetupCardAllowence();
         playerMasterComp.PlayerDrawCards();
     }
-
-    //TODO use Observer pattern to look at the play areas and the player hand.
-    //use state pattern to deal with whos turn it is.
-    //If player cant play any more cards, transition AI turn.
-    //If AI turn is done, go back to player turn.
-    //If player area is empty fo cards the player loses the game
-    //If enemy area is empty then the player won a round and can continue to the next round.
-    // if the player plays a hero card to tehir play area,
-    // add its suite to the available suites for the players action card draw.
 }
