@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewActionCardStats", menuName = "Cards/ActionCardStats")]
 public class ActionCardStats : CardStatsBase
 {
+    //This class is specifically used for action cards that need to randomise their card value.
     public ActionCardStats(ActionCardStats statsToUse)
     {
         DisplayName = statsToUse.DisplayName;
