@@ -31,6 +31,8 @@ public class CardHand : CardHolder
     //Draws cards until hand is full
     public void DrawCardsPhase()
     {
+        DestroyUnavailableActionCards();
+
         while (currentHeldCount < heldCards.Length)
         {
             var card = cardDeck.CreateCard();
@@ -40,6 +42,24 @@ public class CardHand : CardHolder
             }
         }
         ReorganizeHeldCardPositions();
+    }
+
+    //Removes cards that we no longer get allowence for,
+    //only happens if the last hero of a suite dies.
+    private void DestroyUnavailableActionCards()
+    {
+        foreach (var heldCard in heldCards)
+        {
+            if (!heldCard) { continue; }
+            var unavilable = GameMaster.Instance.GetUnavailableSuites();
+            foreach (var suite in unavilable)
+            {
+                if (heldCard.Type == CardType.Action && heldCard.Suite == suite)
+                {
+                    DestroyCard(heldCard);
+                }
+            }
+        }
     }
 
     //RemovesCard and destroys it
@@ -190,5 +210,5 @@ public class CardHand : CardHolder
             selectedCard = null;
             highLightedCard = null;
         }
-    } 
+    }
 }
