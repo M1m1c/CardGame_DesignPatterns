@@ -24,7 +24,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
   PlayActions:
   - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
-  DrawActions: []
   LeaveActions:
   - {fileID: 11400000, guid: ad49d5b2892c5e6469dd63d16af4f5fa, type: 2}
   MinValue: 5
