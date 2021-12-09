@@ -47,8 +47,8 @@ The singleton pattern is used once in the game and that is for the `GameMaster.c
 The script can be found in the folder `Assets/Scripts`. At the top of the class the static variable "Instance" of type game master is declared, it is then set in the Awake() method.
 
 ### Component Pattern
-The component Pattern is used on the `Assets/Prefabs/GameMaster.prefab` where the script `PlayerMaster.cs` is used as a component that the `GameMaster.cs` script uses.
-The reason for the use here was mainly for readability. The PlayerMaster holds fucntions related to the player that the GameMaster still needs to access, however keeping them in the GameMaster made it difficult to read.
+The component Pattern is used on the `Assets/Prefabs/GameMaster.prefab` where the script `PlayerMaster.cs` and `StateMachineComp.cs` are used as a components that the `GameMaster.cs` script uses.
+The reason for the use here was mainly for readability. Both sctripts holds fucntions related to the player that the GameMaster still needs to access, however keeping them in the GameMaster made it difficult to read and unclear what the gmaemasters purpose was.
 
 ### Observer Pattern
 The GameMaster is the sole observer in the observer pattern. It Holds multiple observer types that it binds at the start of the game to different classes that implement the subject class.\
