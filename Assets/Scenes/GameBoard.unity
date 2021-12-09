@@ -2253,7 +2253,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: How many Enemies
+  m_Text: How Many Enemies
 --- !u!222 &1111205665
 CanvasRenderer:
   m_ObjectHideFlags: 0

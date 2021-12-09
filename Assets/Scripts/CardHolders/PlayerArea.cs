@@ -7,7 +7,17 @@ public class PlayerArea : CardArea
     public override void AddCard(CardBase card)
     {
         base.AddCard(card);
+        SendCarSuitesOnField();
+    }
 
+    public override void RemoveCard(CardBase card)
+    {
+        base.RemoveCard(card);
+        SendCarSuitesOnField();
+    }
+
+    private void SendCarSuitesOnField()
+    {
         var cardSuitesOnField = new List<CardSuite>();
         foreach (var item in heldCards)
         {

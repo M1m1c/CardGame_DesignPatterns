@@ -23,4 +23,6 @@ public abstract class CardArea : CardHolder
         }
     }
 
+   
+
 }

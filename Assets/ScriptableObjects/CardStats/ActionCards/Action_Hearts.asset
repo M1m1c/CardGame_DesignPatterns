@@ -24,7 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
   PlayActions:
   - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
-  DrawActions: []
+  - {fileID: 11400000, guid: 130155b12d69c6546913d6023f6e57f6, type: 2}
   LeaveActions: []
-  MinValue: 5
-  MaxValue: 8
+  MinValue: 3
+  MaxValue: 6
