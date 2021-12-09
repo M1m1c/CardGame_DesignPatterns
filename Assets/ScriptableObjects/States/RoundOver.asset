@@ -14,11 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HolderId: 0
   EntryActions:
-  - {fileID: 11400000, guid: 4d9359006fe89014eae236a048aa9f50, type: 2}
-  - {fileID: 11400000, guid: d58fa6d8a2ba3324ea0472d9a7191cfc, type: 2}
-  ExitActions:
-  - {fileID: 11400000, guid: 4d9359006fe89014eae236a048aa9f50, type: 2}
+  - {fileID: 11400000, guid: 9edc49b90fd31284e8686087b690e9f1, type: 2}
+  ExitActions: []
   stateLinks:
   - linkedState: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
     linkConditions:
-    - {fileID: 11400000, guid: ead4083c5bcb0e04595cc49600590ba2, type: 2}
+    - {fileID: 11400000, guid: d0c6b6e7bacfc6048b43cc4f5f447749, type: 2}
