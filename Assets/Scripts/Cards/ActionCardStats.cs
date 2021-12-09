@@ -5,9 +5,9 @@ public class ActionCardStats : CardStatsBase
 {
     public ActionCardStats(ActionCardStats statsToUse)
     {
-        DisplayName =statsToUse.DisplayName;
+        DisplayName = statsToUse.DisplayName;
         Value = Random.Range(statsToUse.MinValue, statsToUse.MaxValue);
-        suite= statsToUse.suite;
+        suite = statsToUse.suite;
         cardType = statsToUse.cardType;
         Image = statsToUse.Image;
 
