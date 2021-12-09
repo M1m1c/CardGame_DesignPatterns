@@ -24,8 +24,6 @@ public class IsPlayerOutOfMoves : LinkConditionBase
 
             if (cantPlayHeroCard && cantPlayActionCard)
             {
-                //Player turn is over, transition to ai turn
-                //Debug.Log("Player turn over");
                 retval = true;
             }
         }
