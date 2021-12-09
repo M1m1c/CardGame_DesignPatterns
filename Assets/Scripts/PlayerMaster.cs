@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMaster : MonoBehaviour
 {
-
-
     public Subject<CardHolder> OnCheckTurnOver { get; private set; } = new Subject<CardHolder>();
 
     public bool HeroPlayedThisTurn { get; private set; } = false;
@@ -41,6 +39,7 @@ public class PlayerMaster : MonoBehaviour
         playerHand.DrawCardsPhase();
     }
 
+    //used to reset or setup the card allowence for the player on their turn
     public void SetupCardAllowence()
     {
         ActionCardAllowence = HeroesInAreaAllowence.ToList();
@@ -51,6 +50,8 @@ public class PlayerMaster : MonoBehaviour
         HeroPlayedThisTurn = false;
     }
 
+    //updates the amount of cards a player is allowed to play on a turn,
+    //dependent on the suites of the heroes that are in their play area.
     public void UpdateCardAllowence(CardBase cardToRemove)
     {
         if (cardToRemove.Type == CardType.Hero)
@@ -70,6 +71,7 @@ public class PlayerMaster : MonoBehaviour
         OnCheckTurnOver.Notify(null);
     }
 
+    //updates the suites that cannot be produced from the player deck
     public void UpdateUnavialableSuites(List<CardSuite> suitesInArea)
     {
         var tempSuites = cardSuitesInGame.ToList();
@@ -82,6 +84,7 @@ public class PlayerMaster : MonoBehaviour
         HeroesInAreaAllowence = suitesInArea;
     }
 
+    //adds a warrior hero card to the player area of the game board
     public void AddPlayerStartCard(PlayerArea playerArea)
     {
         var playerDeck = FindObjectOfType<PlayerCardDeck>();
