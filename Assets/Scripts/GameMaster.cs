@@ -7,22 +7,17 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance { get; private set; }
 
-
-    public StateObjectBase CurrentState;
-
     public Text RoundText;
 
     public RectTransform NextRoundUI;
     public RectTransform RestartUI;
 
     protected PlayerMaster playerMasterComp;
-    protected StateInitialiser stateInitialiserComp;
+    protected StateMachineComp stateMachineComp;
 
     protected Observer<List<CardSuite>> suiteObserver;
     protected Observer<CardBase> cardPlayObserver;
     protected Observer<CardHolder> turnOverObserver;
-
-    protected CardHolder currentHolder;
 
     protected PlayerArea playerArea;
     protected AIArea aIArea;
@@ -40,9 +35,7 @@ public class GameMaster : MonoBehaviour
             Instance = this;
         }
         playerMasterComp = GetComponent<PlayerMaster>();
-        stateInitialiserComp = GetComponent<StateInitialiser>();
-
-
+        stateMachineComp = GetComponent<StateMachineComp>();
     }
 
     private void Start()
@@ -58,7 +51,7 @@ public class GameMaster : MonoBehaviour
         BindPlayerHandObservers();
         BindTurnOverObserver();
         SetupPlayerTurn();
-        CurrentState.Enter(this, null);
+        stateMachineComp.CurrentState.Enter(this, null);
     }
 
     private void BindSuiteObserver(PlayerArea playerArea)
@@ -77,72 +70,16 @@ public class GameMaster : MonoBehaviour
 
     private void BindTurnOverObserver()
     {
-        turnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
+        turnOverObserver = new Observer<CardHolder>(stateMachineComp.CheckShouldStateTransition);
         aIArea.OnTurnEnd.AddObserver(turnOverObserver);
         playerArea.OnTurnEnd.AddObserver(turnOverObserver);
         playerMasterComp.OnCheckTurnOver.AddObserver(turnOverObserver);
     }
 
-    //gets a reference to a new state if it is viable, then swithces to it
-    private void CheckShouldStateTransition(CardHolder sender)
-    {
-
-        if (!CurrentState) { return; }
-
-        if (!sender) { sender = currentHolder; }
-
-        StateObjectBase PotentialNewState = CheckStateLinks(sender);
-
-        if (PotentialNewState == null) { return; }
-        if (PotentialNewState == CurrentState) { return; }
-
-        SwitchState(PotentialNewState);
-    }
-
-    //Checks the link condition of each of this states links using the sender as the target of those checks
-    //returns a the state a link leads to if the conditions are all true
-    private StateObjectBase CheckStateLinks(CardHolder sender)
-    {
-        StateObjectBase PotentialNewState = null;
-        foreach (var link in CurrentState.GetStateLinks())
-        {
-            if (link.LinkConditions.Length == 0)
-            {
-                PotentialNewState = link.LinkedState;
-                break;
-            }
-
-            var correctConditions = 0;
-            foreach (var condition in link.LinkConditions)
-            {
-                if (condition.CheckCondition(this, sender)) { correctConditions++; }
-            }
-
-            if (correctConditions == link.LinkConditions.Length)
-            {
-                PotentialNewState = link.LinkedState;
-                break;
-            }
-        }
-
-        return PotentialNewState;
-    }
-
-    //exits the current state and enters a new state
-    private void SwitchState(StateObjectBase PotentialNewState)
-    {
-        CurrentState.Exit(this, currentHolder);
-        CurrentState = PotentialNewState;
-        currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
-        CurrentState.Enter(this, currentHolder);
-    }
-
-
-
     //setsup the correct menu depending on who lost the round
     public void RoundOver()
     {
-        if (CurrentState.HolderId == 0)
+        if (stateMachineComp.CurrentState.HolderId == 0)
         {
             if (playerArea.GetCurrentHeldCards() <= 0)
             {
@@ -166,7 +103,7 @@ public class GameMaster : MonoBehaviour
     public void GoToNextRound()
     {
         if (NextRoundUI) { NextRoundUI.gameObject.SetActive(false); }
-        CheckShouldStateTransition(aIArea);
+        stateMachineComp.CheckShouldStateTransition(aIArea);
         aIArea.AddUnitsToArea();
     }
 

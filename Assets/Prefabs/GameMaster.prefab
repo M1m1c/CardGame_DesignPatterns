@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 226180220925934240}
   - component: {fileID: 226180220925934246}
   - component: {fileID: 5265963334045792060}
+  - component: {fileID: 8530546460854491328}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -45,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30002c22ecc103b40a14f522c9d13461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentState: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
+  RoundText: {fileID: 0}
+  NextRoundUI: {fileID: 0}
+  RestartUI: {fileID: 0}
 --- !u!114 &226180220925934246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,3 +78,16 @@ MonoBehaviour:
     State: {fileID: 11400000, guid: 8b299b43986420349a207bdc3db47b01, type: 2}
   - HolderToId: {fileID: 0}
     State: {fileID: 11400000, guid: aac9f54adcf17bc46853007d9990717c, type: 2}
+--- !u!114 &8530546460854491328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226180220925934243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81eed55115e3ae4eb874d588466cc89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentState: {fileID: 11400000, guid: 42705c1e9802d094f8579888ef8627f0, type: 2}
