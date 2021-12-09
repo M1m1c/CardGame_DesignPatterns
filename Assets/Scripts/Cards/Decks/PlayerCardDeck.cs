@@ -12,6 +12,8 @@ public class PlayerCardDeck : CardDeck
         heroCardThrehsold += chagenValue;
     }
 
+    //Randomises if it should create a hero or action card, randomisese suite and finds the stats of that card,
+    //instantiates a new card if stats matching the type and suite were found.
     public override CardBase CreateCard()
     {
         if (AvilableCards.CardStats.Length <= 0) { return null; }
@@ -35,8 +37,6 @@ public class PlayerCardDeck : CardDeck
                 tempSuites.Remove(uSuite);
             }
         }
-
-        //cardType = CardType.Hero;
 
         var chosenSuite = tempSuites[Random.Range(0, tempSuites.Count)];
         var chosenCardStat = AvilableCards.CardStats.FirstOrDefault(q => q.cardType == cardType && q.suite == chosenSuite);
