@@ -18,6 +18,17 @@ public class AIArea : CardArea
 
     public PlayerArea playerArea;
 
+
+    //Adds cards to play area by requesting new cards from card deck
+    public void AddUnitsToArea()
+    {
+        while (currentHeldCount < cardsToDrawPerRound)
+        {
+            var card = cardDeck.CreateCard();
+            AddCard(card);
+        }
+    }
+
     public void StartAttackingPlayer()
     {
         if (!playerArea) { return; }
@@ -25,9 +36,9 @@ public class AIArea : CardArea
         StartCoroutine(AttackSequence());
     }
 
+    //Goes through all held cards and attacks player with them
     private IEnumerator AttackSequence()
-    {
-      
+    {    
         for (int i = 0; i < heldCards.Length; i++)
         {
             var card = heldCards[i];
@@ -38,17 +49,14 @@ public class AIArea : CardArea
         OnTurnEnd.Notify(this);
     }
 
+    //performs the cards select actions and then play actions agains target
+    //Since all AI cards are unit cards, this means that they deal damage to target.
     private IEnumerator AttackWithCard(CardBase card)
     {
         if (!card) { yield break; }
         if (playerArea.GetCurrentHeldCards() <= 0) { yield break; }
-        CardBase target = null;
-        while (target == null)
-        {
-            target = playerArea.GetCard(UnityEngine.Random.Range(0, playerArea.GetLength()));
-        }
+        var target = PickATarget();
 
-     
         card.TryDoSelectActions(target.gameObject);
 
         var line = card.GetComponent<LineRenderer>();
@@ -67,22 +75,14 @@ public class AIArea : CardArea
         card.TryDoDeSelectActions(null);
     }
 
-    public override void AddCard(CardBase card)
+    private CardBase PickATarget()
     {
-        if (!card) { return; }
-        if (currentHeldCount >= heldCards.Length) { return; }
-        cardXStartPos = cardXPosStarts[currentHeldCount];
-        heldCards[Array.IndexOf(heldCards, null)] = card;
-        currentHeldCount++;
-        ReorganizeHeldCardPositions();
-    }
-
-    public void AddUnitsToArea()
-    {
-        while (currentHeldCount < cardsToDrawPerRound)
+        CardBase target = null;
+        while (target == null)
         {
-            var card = cardDeck.CreateCard();
-            AddCard(card);
+            target = playerArea.GetCard(UnityEngine.Random.Range(0, playerArea.GetLength()));
         }
+
+        return target;
     }
 }

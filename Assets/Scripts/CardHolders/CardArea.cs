@@ -17,7 +17,15 @@ public abstract class CardArea : CardHolder
         heldCards = new CardBase[6];
     }
 
-    public abstract void AddCard(CardBase card);
+    public virtual void AddCard(CardBase card)
+    {
+        if (!card) { return; }
+        if (currentHeldCount >= heldCards.Length) { return; }
+        cardXStartPos = cardXPosStarts[currentHeldCount];
+        heldCards[Array.IndexOf(heldCards, null)] = card;
+        currentHeldCount++;
+        ReorganizeHeldCardPositions();
+    }
 
     public virtual void RemoveCard(CardBase card)
     {

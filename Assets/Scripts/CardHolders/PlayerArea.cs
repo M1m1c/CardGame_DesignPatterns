@@ -9,12 +9,7 @@ public class PlayerArea : CardArea
 
     public override void AddCard(CardBase card)
     {
-        if (!card) { return; }
-        if (currentHeldCount >= heldCards.Length) { return; }
-        cardXStartPos = cardXPosStarts[currentHeldCount];
-        heldCards[Array.IndexOf(heldCards, null)] = card;
-        currentHeldCount++;
-        ReorganizeHeldCardPositions();
+        base.AddCard(card);
 
         var cardSuitesOnField = new List<CardSuite>();
         foreach (var item in heldCards)
