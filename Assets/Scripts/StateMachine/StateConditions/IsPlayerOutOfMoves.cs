@@ -30,5 +30,4 @@ public class IsPlayerOutOfMoves : LinkConditionBase
 
         return retval;
     }
-
 }

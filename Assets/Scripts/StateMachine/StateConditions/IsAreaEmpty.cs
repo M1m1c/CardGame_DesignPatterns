@@ -17,5 +17,4 @@ public class IsAreaEmpty : LinkConditionBase
 
         return retval;
     }
-
 }
