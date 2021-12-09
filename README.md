@@ -25,7 +25,8 @@ and in the scripts `PlayerCardDeck.cs` `AICardDeck.cs`.\
 These scripts are used in the prefabs PlayerCardDeck and AiCardDeck found in the prefabs folder. 
 
 ### Strategy Pattern
-The cards in the game use the Strategy pattern as described in this video: https://www.youtube.com/watch?v=yjZsAl13trk
+The cards in the game use the Strategy pattern as described in this video\
+https://www.youtube.com/watch?v=yjZsAl13trk
 
 This pattern is used so the cards can each individually produce different effects when selected, de-selected,\
 played or when they leave the game board.\
@@ -42,3 +43,6 @@ The actions inherit from scriptable object and for each action a corresponding s
 The card stat scriptable objects where the actions for each card are set can be found in any subfolder under `Assets/ScriptableObjects/CardStats`.
 
 ### Singleton
+The singleton pattern is used once in the game and that is for the `GameMaster.cs` there can only be one game master in the game.
+The script can be found in the folder `Assets/Scripts`. At the top of the class the static variable "Instance" of type game master is declared, it is then set in the Awake() method.
+
