@@ -29,6 +29,18 @@ public class PlayerMaster : MonoBehaviour
 
     protected List<CardSuite> HeroesInAreaAllowence = new List<CardSuite>();
 
+    protected CardHand playerHand;
+
+    private void Start()
+    {
+        playerHand = FindObjectOfType<CardHand>();
+    }
+
+    public void PlayerDrawCards()
+    {
+        playerHand.DrawCardsPhase();
+    }
+
     public void SetupCardAllowence()
     {
         ActionCardAllowence = HeroesInAreaAllowence.ToList();
