@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour
 {
@@ -8,6 +10,11 @@ public class GameMaster : MonoBehaviour
    
 
     public StateObjectBase CurrentState;
+
+    public Text RoundText;
+
+    public RectTransform NextRoundUI;
+    public RectTransform RestartUI;
 
     protected PlayerMaster playerMasterComp;
     protected StateInitialiser stateInitialiserComp;
@@ -17,6 +24,11 @@ public class GameMaster : MonoBehaviour
     protected Observer<CardHolder> TurnOverObserver;
 
     protected CardHolder currentHolder;
+
+    protected PlayerArea playerArea;
+    protected AIArea aIArea;
+
+    protected int roundCount = 0;
 
     private void Awake()
     {
@@ -36,7 +48,7 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        var playerArea = FindObjectOfType<PlayerArea>();
+        playerArea = FindObjectOfType<PlayerArea>();
         if (!playerArea) { return; }
        
 
@@ -44,27 +56,26 @@ public class GameMaster : MonoBehaviour
 
         BindPlayerHandObservers();
 
-        SetupPlayerTurn();
+        //SetupPlayerTurn();
 
-        var aiArea = FindObjectOfType<AIArea>();
-        if (!aiArea) { return; }
+        aIArea = FindObjectOfType<AIArea>();
+        if (!aIArea) { return; }
         TurnOverObserver = new Observer<CardHolder>(CheckShouldStateTransition);
-        aiArea.OnTurnEnd.AddObserver(TurnOverObserver);
+        aIArea.OnTurnEnd.AddObserver(TurnOverObserver);
         playerArea.OnTurnEnd.AddObserver(TurnOverObserver);
         playerMasterComp.OnCheckTurnOver.AddObserver(TurnOverObserver);
 
         currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
+
+        SetupPlayerTurn();
+        CurrentState.Enter(this, null);
     }
 
 
     private void SetupPlayerArea(PlayerArea playerArea)
     {
-    
-     
-
         BindSuiteObserver(playerArea);
-        playerMasterComp.AddPlayerStartCard(playerArea);
-       
+        playerMasterComp.AddPlayerStartCard(playerArea);    
     }
 
     private void BindPlayerHandObservers()
@@ -83,7 +94,7 @@ public class GameMaster : MonoBehaviour
 
     private void CheckShouldStateTransition(CardHolder sender)
     {
-       
+
         if (!CurrentState) { return; }
 
         if (!sender) { sender = currentHolder; }
@@ -97,8 +108,37 @@ public class GameMaster : MonoBehaviour
         CurrentState = PotentialNewState;
         currentHolder = stateInitialiserComp.IdHoldersPair[CurrentState.HolderId];
         CurrentState.Enter(this, currentHolder);
+    }
 
-        Debug.Log(CurrentState.name);
+    public void RoundOver()
+    {
+        //Move this to state action
+        if (CurrentState.HolderId == 0)
+        {
+            if (playerArea.GetCurrentHeldCards() <= 0)
+            {
+                if (RestartUI) { RestartUI.gameObject.SetActive(true); }
+            }
+            else if (aIArea.GetCurrentHeldCards() <= 0)
+            {
+                roundCount++;
+                if (RoundText) { RoundText.text = "" + roundCount; }
+                if (NextRoundUI) { NextRoundUI.gameObject.SetActive(true); }
+            }
+        }
+    }
+
+    public void ReloadScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
+    public void GoToNextRound()
+    {
+        if (NextRoundUI) { NextRoundUI.gameObject.SetActive(false); }
+        CheckShouldStateTransition(aIArea);
+        aIArea.AddUnitsToArea();
     }
 
     private StateObjectBase CheckStateLinks(CardHolder holder)
@@ -152,6 +192,7 @@ public class GameMaster : MonoBehaviour
     public void SetupPlayerTurn()
     {
         playerMasterComp.SetupCardAllowence();
+        playerMasterComp.PlayerDrawCards();
     }
 
     //TODO use Observer pattern to look at the play areas and the player hand.
