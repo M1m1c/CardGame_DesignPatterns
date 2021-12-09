@@ -19,14 +19,10 @@ public class CardHand : CardHolder
     private Ray ray;
     private RaycastHit hit;
 
-
-    void Start()
-    {
-        DrawCardsPhase();
-    }
-
     void Update()
     {
+        if (Input.GetKey(KeyCode.Escape)) { Application.Quit(); }
+
         if (IsActive == false) { return; }
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
@@ -41,7 +37,6 @@ public class CardHand : CardHolder
         {
             AttemptPlayCard();
             SelectCardInHand();
-            //OnCheckTurnOver.Notify(this);
         }
         else if (Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -60,7 +55,6 @@ public class CardHand : CardHolder
             }
         }
         ReorganizeHeldCardPositions();
-        IsActive = true;
     }
 
 
