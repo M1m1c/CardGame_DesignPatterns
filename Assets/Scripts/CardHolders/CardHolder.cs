@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,32 @@ public class CardHolder : MonoBehaviour
     protected float[] cardXPosStarts = new float[] { 0f, -4.45f, -8.5f, -12.75f, -17f, -21.25f, };
 
     protected int currentHeldCount = 0;
-    protected CardBase[] heldCards = new CardBase[5]; 
+    protected CardBase[] heldCards = new CardBase[5];
 
+    public virtual void AddCard(CardBase card)
+    {
+        if (!card) { return; }
+        if (currentHeldCount >= heldCards.Length) { return; }
+        IncreaseCurrentHeldCount();
+        heldCards[Array.IndexOf(heldCards, null)] = card;
+        ReorganizeHeldCardPositions();
+    }
+
+    public virtual void RemoveCard(CardBase card)
+    {
+        if (!card) { return; }
+        if (!heldCards.Contains(card)) { return; }
+
+        var index = Array.IndexOf(heldCards, card);
+        heldCards[index] = null;
+        Destroy(card.gameObject);
+        DecreaseCurrentHeldCount();
+        ReorganizeHeldCardPositions();
+    }
+
+   
+    //Moves heldCards so that they line up correctly on screen,
+    //also pushes cards to lower positioned indecies that are empty.
     protected virtual void ReorganizeHeldCardPositions()
     {
         var pos = cardXStartPos;
@@ -39,6 +64,7 @@ public class CardHolder : MonoBehaviour
         }
     }
 
+    //moves the first found card to the i index in heldcards
     private CardBase MoveNearestCardToIndex(int i)
     {
         CardBase retval = null;
@@ -56,6 +82,18 @@ public class CardHolder : MonoBehaviour
         }
         return retval;
     }
+
+    protected void IncreaseCurrentHeldCount()
+    {
+        cardXStartPos = cardXPosStarts[currentHeldCount];
+        currentHeldCount++;
+    }
+    protected void DecreaseCurrentHeldCount()
+    {
+        currentHeldCount--;
+        cardXStartPos = cardXPosStarts[Mathf.Clamp(currentHeldCount - 1, 0, cardXPosStarts.Length - 1)];
+    }
+
 
     protected void SetCardPosAndSize(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
     {

@@ -6,11 +6,9 @@ using UnityEngine;
 
 public class CardHand : CardHolder
 {
-
-    public CardDeck cardDeck;
-
     public Subject<CardBase> OnCardPlayed { get; private set; } = new Subject<CardBase>();
 
+    public CardDeck cardDeck;
 
     private CardBase highLightedCard = null;
     private CardBase selectedCard = null;
@@ -19,19 +17,54 @@ public class CardHand : CardHolder
     private Ray ray;
     private RaycastHit hit;
 
+    //Removes card form hand without destroying it.
+    public override void RemoveCard(CardBase card)
+    {
+        if (!card) { return; }
+        var isInHand = heldCards.Contains(card);
+        if (!isInHand) { return; }
+
+        DeSelectCardInHand();
+        heldCards[Array.IndexOf(heldCards, card)] = null;
+        DecreaseCurrentHeldCount();
+        ReorganizeHeldCardPositions();
+    }
+
+    //Draws cards until hand is full
+    public void DrawCardsPhase()
+    {
+        while (currentHeldCount < heldCards.Length)
+        {
+            var card = cardDeck.CreateCard();
+            if (card)
+            {
+                AddCard(card);
+            }
+        }
+        ReorganizeHeldCardPositions();
+    }
+
+    //RemovesCard and destroys it
+    public void DestroyCard(CardBase card)
+    {
+        if (!card) { return; }
+        var isInHand = heldCards.Contains(card);
+        if (!isInHand) { return; }
+
+        RemoveCard(card);
+        OnCardPlayed.Notify(card);
+        Destroy(card.gameObject);
+    }
+
+    //Checks for input.
+    //Tracks which held card is beignhovered over wiht mouse.
+    //When clicking depending on context either plays card, selects card or de-selects card.
     void Update()
     {
         if (Input.GetKey(KeyCode.Escape)) { Application.Quit(); }
 
         if (IsActive == false) { return; }
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
-        {
-            HoverOverCardInHand();
-            UpdateTargetingLine();
-        }
-
-
+        RayCastFromMousePosition();
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -44,44 +77,78 @@ public class CardHand : CardHolder
         }
     }
 
-    public void DrawCardsPhase()
+    private void RayCastFromMousePosition()
     {
-        while (currentHeldCount < heldCards.Length)
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
         {
-            if (DrawCard())
-            {
-                cardXStartPos = cardXPosStarts[currentHeldCount];
-                currentHeldCount++;
-            }
+            HoverOverCardInHand();
+            UpdateTargetingLine();
         }
-        ReorganizeHeldCardPositions();
     }
 
-
-    public void RemoveCard(CardBase tempSelection)
+    //Highlights held card overlaped by the mouse cursor
+    private void HoverOverCardInHand()
     {
-        DeSelectCardInHand();
-        heldCards[Array.IndexOf(heldCards, tempSelection)] = null;
-        currentHeldCount--;
+        if (selectedCard) { return; }
 
-        var startPosIndex = currentHeldCount;
-        if (currentHeldCount > 0) { startPosIndex--; }
-        cardXStartPos = cardXPosStarts[startPosIndex];
+        var entity = hit.collider.gameObject;
+        if (!entity) { return; }
 
-        ReorganizeHeldCardPositions();
-    }
+        //Removes highlight from current card when mouse it not over it
+        if (highLightedCard && entity != highLightedCard.gameObject)
+        {
+            SetHighLightedCard(
+               null,
+               highLightedCard.SlotedPosition,
+               highLightedCard.OriginalSize);
+            return;
+        }
 
-    public void DestroyCard(CardBase card)
-    {
+        var card = entity.GetComponent<CardBase>();
         if (!card) { return; }
 
-        var isInHand = heldCards.Contains(card);
-        if (!isInHand) { return; }
-        RemoveCard(card);
-        OnCardPlayed.Notify(card);
-        Destroy(card.gameObject);
+        //highlights card which mouse is over
+        if (heldCards.Contains(card))
+        {
+            SetHighLightedCard(
+                card,
+                card.SlotedPosition + new Vector3(0f, 0f, 2f),
+                card.OriginalSize + new Vector3(0.2f, 0.2f, 0.2f));
+        }
     }
 
+    private void SetHighLightedCard(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
+    {
+        if (highLightedCard && card == null)
+        {
+            SetCardPosAndSize(highLightedCard, posToSet, sizeToSet);
+        }
+        else if (card)
+        {
+            SetCardPosAndSize(card, posToSet, sizeToSet);
+        }
+
+        highLightedCard = card;
+    }
+
+
+    //Updates targetign line of currently seleceted card to follow mouse cursor.
+    private void UpdateTargetingLine()
+    {
+        if (!selectedCard) { return; }
+
+        if (!targetingLine)
+        {
+            targetingLine = selectedCard.GetComponent<LineRenderer>();
+            return;
+        }
+
+        targetingLine.SetPosition(1, hit.point);
+
+    }
+
+    //Attempts to play card with current overed object as target of card
     private void AttemptPlayCard()
     {
         if (!selectedCard) { return; }
@@ -107,51 +174,14 @@ public class CardHand : CardHolder
         selectedCard.TryDoPlayActions(target);
     }
 
-    private bool DrawCard()
+    private void SelectCardInHand()
     {
-        var retval = false;
-        var card = cardDeck.CreateCard();
-        if (card)
+        if (highLightedCard && selectedCard == null)
         {
-            heldCards[Array.IndexOf(heldCards, null)] = card;
-            retval = true;
-        }
-        return retval;
-    }
-
-
-
-
-    private void HoverOverCardInHand()
-    {
-        if (selectedCard) { return; }
-
-        var entity = hit.collider.gameObject;
-        if (!entity) { return; }
-
-        if (highLightedCard && entity != highLightedCard.gameObject)
-        {
-            SetHighLightedCard(
-               null,
-               highLightedCard.SlotedPosition,
-               highLightedCard.OriginalSize);
-            return;
-        }
-
-        var card = entity.GetComponent<CardBase>();
-        if (!card) { return; }
-
-
-        if (heldCards.Contains(card))
-        {
-            SetHighLightedCard(
-                card,
-                card.SlotedPosition + new Vector3(0f, 0f, 2f),
-                card.OriginalSize + new Vector3(0.2f, 0.2f, 0.2f));
+            selectedCard = highLightedCard;
+            selectedCard.TryDoSelectActions(null);
         }
     }
-
-
 
     private void DeSelectCardInHand()
     {
@@ -162,44 +192,5 @@ public class CardHand : CardHolder
             selectedCard = null;
             highLightedCard = null;
         }
-    }
-
-    private void SelectCardInHand()
-    {
-        if (highLightedCard && selectedCard == null)
-        {
-            selectedCard = highLightedCard;
-            selectedCard.TryDoSelectActions(null);
-        }
-    }
-
-    private void UpdateTargetingLine()
-    {
-        if (!selectedCard) { return; }
-
-        if (!targetingLine)
-        {
-            targetingLine = selectedCard.GetComponent<LineRenderer>();
-            return;
-        }
-
-        targetingLine.SetPosition(1, hit.point);
-
-    }
-
-    private void SetHighLightedCard(CardBase card, Vector3 posToSet, Vector3 sizeToSet)
-    {
-        if (highLightedCard && card == null)
-        {
-            SetCardPosAndSize(highLightedCard, posToSet, sizeToSet);
-        }
-        else if (card)
-        {
-            SetCardPosAndSize(card, posToSet, sizeToSet);
-        }
-
-        highLightedCard = card;
-    }
-
-   
+    } 
 }
