@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f316076a614694282b394a773509d8, type: 3}
+  m_Name: Ranger
+  m_EditorClassIdentifier: 
+  DisplayName: Ranger
+  Value: 15
+  suite: 2
+  cardType: 1
+  Image: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+  cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
+  SelectedActions:
+  - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
+  DeSelectedActions:
+  - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
+  PlayActions:
+  - {fileID: 11400000, guid: b68a43608d4e90a42ba60af2fec4b21f, type: 2}
+  DrawActions: []
+  LeaveActions:
+  - {fileID: 11400000, guid: 85080d775895fa34a9b57d759a1aaf85, type: 2}
+  - {fileID: 11400000, guid: ad49d5b2892c5e6469dd63d16af4f5fa, type: 2}
