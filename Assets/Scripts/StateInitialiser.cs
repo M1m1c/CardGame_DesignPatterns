@@ -7,6 +7,9 @@ public class StateInitialiser : MonoBehaviour
 
     [SerializeField]
     protected StateInstancePair[] stateInstancePairs;
+
+    //Setsup the correct ID for the related CardHolder in the game,
+    //this ID is later used by the GameMaster to determine what the current odler is when switching state.
     private void Awake()
     {
         foreach (var pair in stateInstancePairs)
