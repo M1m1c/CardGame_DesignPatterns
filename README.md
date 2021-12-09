@@ -57,7 +57,13 @@ It calls a notify everytime the player plays a card, which the GameMaster's `car
 The base class scripts for the observer and subject can be found in the folder `Assets/Scripts/ObserverPattern`.
 To see an implementation of it look for the funcitons prefixed with "Bind" in `GameMaster.cs` and look at what function gets bound.
 
-The observer pattern is used heavily to drive the function calls for checking if the game should switch who's turn it is.
+The observer pattern is used heavily to drive the function calls for checking if the game should switch turns.
 
 ### State Pattern
+The state pattern is used by the GameMaster to keep track of who's turn it is or if the round is over.
+Each state has its own set of links to other states and these links ahve a set of conditions that need to be fulfilled in order for the game to switch to the linked state.
+Each state also has a set of entry and exit actions to perform when switching, which like the cards also use the strategy pattern.
 
+The scripts related to the state pattern can be found in the folder `Assets/Scripts/StateMachine`.
+The scriptable objects that represent the states can be found in the folder `Assets/ScriptableObjects/States`
+To see its implementation look in `GameMaster.cs` at the functions: `CheckShouldStateTransition(CardHolder sender)`, `CheckStateLinks(CardHolder sender)` and `SwitchState(StateObjectBase PotentialNewState)`.
