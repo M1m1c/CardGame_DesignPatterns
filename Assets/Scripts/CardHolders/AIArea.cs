@@ -1,19 +1,22 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AIArea : CardArea
 {
-    public int cardsToDrawPerRound { get; set; } = 3;
+    public int cardsToDrawPerRound { get; private set; } = 1;
+    public Text SlideNumber;
+
+    public void SetcardsToDrawPerRound(System.Single value)
+    {
+        cardsToDrawPerRound=(int)value;
+        if (SlideNumber) { SlideNumber.text = "" + value; }
+    }
 
     public CardDeck cardDeck;
 
     public PlayerArea playerArea;
-
-    private void Start()
-    {
-        AddUnitsToArea();
-    }
 
     public void StartAttackingPlayer()
     {
@@ -74,7 +77,7 @@ public class AIArea : CardArea
         ReorganizeHeldCardPositions();
     }
 
-    private void AddUnitsToArea()
+    public void AddUnitsToArea()
     {
         while (currentHeldCount < cardsToDrawPerRound)
         {
