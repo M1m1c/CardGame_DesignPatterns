@@ -14,7 +14,7 @@ Hearts- can either deal damage or heal friendly hero cards.
 
 Diamonds- performs a modulo operation on the enemy health.
 
-Spades- splits their damage between the enemies randomly.
+Spades- splits its damage by three and applies it on the target aswell as its left and right adjacent units.
 
 ## Programming Patterns
 
