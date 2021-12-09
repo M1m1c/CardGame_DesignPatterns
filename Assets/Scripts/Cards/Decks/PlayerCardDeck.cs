@@ -9,6 +9,11 @@ public class PlayerCardDeck : CardDeck
     private int heroCardThrehsold = 25;
     private int maxCardRand = 101;
 
+    public void ChangeHeroCardThreshold(int chagenValue)
+    {
+        heroCardThrehsold += chagenValue;
+    }
+
     public override CardBase CreateCard()
     {
         if (AvilableCards.CardStats.Length <= 0) { return null; }
@@ -21,6 +26,7 @@ public class PlayerCardDeck : CardDeck
         if (isHeroCard)
         {
             cardType = CardType.Hero;
+            ChangeHeroCardThreshold(-5);
         }
         else
         {
