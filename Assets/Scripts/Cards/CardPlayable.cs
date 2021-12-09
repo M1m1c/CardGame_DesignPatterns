@@ -11,14 +11,14 @@ public class CardPlayable : CardBase
 
     public override void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum)
     {
-        base.Setup(cardStats,ownerEnum);
+        base.Setup(cardStats, ownerEnum);
 
         if (cardStats.DisplayName != "")
         {
             var firstLetter = cardStats.DisplayName.Substring(0, 1).ToUpper();
             var restOfText = cardStats.DisplayName.Substring(1).ToLower();
 
-            string FormatedText="";
+            string FormatedText = "";
             for (int i = 0; i < restOfText.Length; i++)
             {
                 FormatedText += restOfText[i] + "\n";

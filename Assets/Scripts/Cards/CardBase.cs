@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CardBase : MonoBehaviour
 {
@@ -19,16 +18,9 @@ public class CardBase : MonoBehaviour
     protected CardAction[] selectedActions;
     protected CardAction[] deSelectedActions;
     protected CardAction[] playActions;
-    protected CardAction[] drawActions;
     protected CardAction[] leaveActions;
 
-
-    private void Start()
-    {
-
-    }
-
-    public virtual void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum )
+    public virtual void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum)
     {
         cardName = cardStats.DisplayName;
         cardValue = cardStats.Value;
@@ -38,7 +30,6 @@ public class CardBase : MonoBehaviour
         selectedActions = cardStats.SelectedActions;
         deSelectedActions = cardStats.DeSelectedActions;
         playActions = cardStats.PlayActions;
-        drawActions = cardStats.DrawActions;
         leaveActions = cardStats.LeaveActions;
     }
 
@@ -54,17 +45,12 @@ public class CardBase : MonoBehaviour
 
     public void TryDoPlayActions(GameObject target)
     {
-        TryDoActions(playActions,target);
-    }
-
-    public void TryDoDrawActions(GameObject target)
-    {
-        TryDoActions(drawActions,target);
+        TryDoActions(playActions, target);
     }
 
     public void TryDoLeaveActions(GameObject target)
     {
-        TryDoActions(leaveActions,target);
+        TryDoActions(leaveActions, target);
     }
 
     protected void TryDoActions(CardAction[] actionsToDo, GameObject target)

@@ -15,7 +15,6 @@ public class CardStatsBase : ScriptableObject
     public CardAction[] SelectedActions;
     public CardAction[] DeSelectedActions;
     public CardAction[] PlayActions;
-    public CardAction[] DrawActions;
     public CardAction[] LeaveActions;
 }
 

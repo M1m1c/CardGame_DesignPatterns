@@ -17,7 +17,6 @@ public class ActionCardStats : CardStatsBase
         SelectedActions = statsToUse.SelectedActions;
         DeSelectedActions = statsToUse.DeSelectedActions;
         PlayActions = statsToUse.PlayActions;
-        DrawActions = statsToUse.DrawActions;
         LeaveActions = statsToUse.LeaveActions;
     }
     public int MinValue = 0;
