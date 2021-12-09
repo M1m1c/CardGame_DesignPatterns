@@ -21,7 +21,6 @@ public class PlayerArea : CardArea
         {
             if (item == null) { continue; }
             if (item.Suite == CardSuite.None) { continue; }
-            if (cardSuitesOnField.Contains(item.Suite)) { continue; }
             cardSuitesOnField.Add(item.Suite);
         }
         OnUpdateAvailableSuites.Notify(cardSuitesOnField);
