@@ -27,9 +27,11 @@ public class PlayerMaster : MonoBehaviour
         CardSuite.Diamonds,
         CardSuite.Hearts };
 
+    protected List<CardSuite> HeroesInAreaAllowence = new List<CardSuite>();
+
     public void SetupCardAllowence()
     {
-        ActionCardAllowence = cardSuitesInGame.ToList();
+        ActionCardAllowence = HeroesInAreaAllowence.ToList();
         foreach (var suite in UnavailableSuites)
         {
             ActionCardAllowence.Remove(suite);
@@ -65,6 +67,7 @@ public class PlayerMaster : MonoBehaviour
             tempSuites.Remove(suite);
         }
         UnavailableSuites = tempSuites;
+        HeroesInAreaAllowence = suitesInArea;
     }
 
     public void AddPlayerStartCard(PlayerArea playerArea)
