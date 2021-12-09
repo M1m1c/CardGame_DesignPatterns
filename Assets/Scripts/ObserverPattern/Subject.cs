@@ -1,4 +1,5 @@
 
+//functions like a linked list with the last added observer becoming hte first to be notified.
 public class Subject<TEntity,TEventData>
 {
     public int observerCount { get; private set; }
