@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c487a001adc460043a6e40d2eecb00c6, type: 3}
   m_Name: Unit_Draug
   m_EditorClassIdentifier: 
-  DisplayName: Draug
+  DisplayName: Skeleton
+  ShouldFormatText: 0
   Value: 0
   suite: 0
   cardType: 4

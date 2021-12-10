@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f316076a614694282b394a773509d8, type: 3}
   m_Name: Sorcerer
   m_EditorClassIdentifier: 
-  DisplayName: Sorcerer
+  DisplayName: Magus
+  ShouldFormatText: 1
   Value: 20
   suite: 8
   cardType: 1

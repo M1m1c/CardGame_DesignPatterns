@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardStatsBase : ScriptableObject
 {
     public string DisplayName;
+    public bool ShouldFormatText;
     public int Value;
     public CardSuite suite;
     public CardType cardType;

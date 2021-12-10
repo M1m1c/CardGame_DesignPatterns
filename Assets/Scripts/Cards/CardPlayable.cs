@@ -23,7 +23,8 @@ public class CardPlayable : CardBase
             string FormatedText = "";
             for (int i = 0; i < restOfText.Length; i++)
             {
-                FormatedText += restOfText[i] + "\n";
+                var add = cardStats.ShouldFormatText ? "\n" : "";
+                FormatedText += restOfText[i] + add;
             }
 
             FirstLetterName.text = firstLetter;
