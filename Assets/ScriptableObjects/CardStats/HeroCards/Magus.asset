@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74f316076a614694282b394a773509d8, type: 3}
-  m_Name: Sorcerer
+  m_Name: Magus
   m_EditorClassIdentifier: 
   DisplayName: Magus
   ShouldFormatText: 1
   Value: 20
   suite: 8
   cardType: 1
-  Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
+  Image: {fileID: 2800000, guid: 37204a030d4072a48abc9afc9f97ba80, type: 3}
   SuiteIcon: {fileID: 2800000, guid: fd820c07002a36d4380fa43cc1905cbc, type: 3}
   cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
   SelectedActions:
