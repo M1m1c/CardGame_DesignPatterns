@@ -11,6 +11,7 @@ public class ActionCardStats : CardStatsBase
         suite = statsToUse.suite;
         cardType = statsToUse.cardType;
         Image = statsToUse.Image;
+        SuiteIcon = statsToUse.SuiteIcon;
 
         cardPrefab = statsToUse.cardPrefab;
 
