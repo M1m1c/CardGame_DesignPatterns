@@ -486,7 +486,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e7f8b62075f9a34aa0750e1e4e3f84b, type: 2}
+  - {fileID: 2100000, guid: a21dab66f2975dd4aaabf3f765c48bdb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -684,6 +684,7 @@ MonoBehaviour:
   RestName: {fileID: 6264678541576811832}
   HealthText: {fileID: 6264678542574302390}
   FrontImage: {fileID: 7201045891008194480}
+  suiteIcons: []
   DamageText: {fileID: 2684743448701082833}
 --- !u!65 &6131151827328420807
 BoxCollider:
