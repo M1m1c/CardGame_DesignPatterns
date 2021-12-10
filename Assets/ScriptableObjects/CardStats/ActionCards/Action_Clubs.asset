@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c487a001adc460043a6e40d2eecb00c6, type: 3}
   m_Name: Action_Clubs
   m_EditorClassIdentifier: 
-  DisplayName: Clubs
+  DisplayName: ' '
   Value: 0
   suite: 1
   cardType: 2
-  Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
-  cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
+  Image: {fileID: 0}
+  SuiteIcon: {fileID: 2800000, guid: 83111ac28e935ff4499f8973775e46e6, type: 3}
+  cardPrefab: {fileID: 520029759068076346, guid: 64f3e1a0ee0d15b46b6b7602c9d265be, type: 3}
   SelectedActions:
   - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
   DeSelectedActions:
   - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
   PlayActions:
   - {fileID: 11400000, guid: 7956f7a43cca80546b2a3f4aa077af77, type: 2}
-  DrawActions: []
   LeaveActions: []
   MinValue: 5
   MaxValue: 8

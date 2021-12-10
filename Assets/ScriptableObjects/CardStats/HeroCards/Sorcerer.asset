@@ -17,6 +17,7 @@ MonoBehaviour:
   suite: 8
   cardType: 1
   Image: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
+  SuiteIcon: {fileID: 2800000, guid: fd820c07002a36d4380fa43cc1905cbc, type: 3}
   cardPrefab: {fileID: 520029759068076346, guid: cf765be9367752241a3827d628cc9c23, type: 3}
   SelectedActions:
   - {fileID: 11400000, guid: 32151c5fed086f646b30721a69a0b1dd, type: 2}
@@ -24,7 +25,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6123c7a872109cf4998a5c06e81bdfdc, type: 2}
   PlayActions:
   - {fileID: 11400000, guid: b68a43608d4e90a42ba60af2fec4b21f, type: 2}
-  DrawActions: []
   LeaveActions:
   - {fileID: 11400000, guid: 85080d775895fa34a9b57d759a1aaf85, type: 2}
   - {fileID: 11400000, guid: ad49d5b2892c5e6469dd63d16af4f5fa, type: 2}

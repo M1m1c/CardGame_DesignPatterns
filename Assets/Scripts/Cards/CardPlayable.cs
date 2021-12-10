@@ -6,8 +6,10 @@ public class CardPlayable : CardBase
     public TextMesh RestName;
     public TextMesh HealthText;
     public Renderer FrontImage;
+    public Renderer[] suiteIcons;
 
     private Material frontImageMat;
+    private Material suiteIconMat;
 
     public override void Setup(CardStatsBase cardStats, OwnerEnum ownerEnum)
     {
@@ -29,9 +31,35 @@ public class CardPlayable : CardBase
         }
 
         HealthText.text = "" + cardValue;
-        frontImageMat = new Material(FrontImage.material);
-        frontImageMat.mainTexture = cardStats.Image;
-        FrontImage.material = frontImageMat;
+       
+        if (cardStats.Image == null)
+        {
+            FrontImage.enabled = false;
+        }
+        else
+        {
+            frontImageMat = new Material(FrontImage.material);
+            frontImageMat.mainTexture = cardStats.Image;
+            FrontImage.material = frontImageMat;
+        }
+        
+        suiteIconMat = new Material(FrontImage.material);
+        suiteIconMat.mainTexture = cardStats.SuiteIcon;
+        foreach (var rend in suiteIcons)
+        {
+            if (!rend) { continue; }
+            
+
+            if (cardStats.SuiteIcon == null)
+            {
+                rend.enabled = false;
+            }
+            else
+            {
+                rend.material = suiteIconMat;
+            }
+        }
+
     }
 
     public void ChangeCardValue(int changeValue)

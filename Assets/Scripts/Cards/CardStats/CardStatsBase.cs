@@ -9,6 +9,7 @@ public class CardStatsBase : ScriptableObject
     public CardSuite suite;
     public CardType cardType;
     public Texture2D Image;
+    public Texture2D SuiteIcon;
 
     public CardBase cardPrefab;
 

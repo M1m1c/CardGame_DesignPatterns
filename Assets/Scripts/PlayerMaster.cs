@@ -29,7 +29,7 @@ public class PlayerMaster : MonoBehaviour
 
     protected CardHand playerHand;
 
-    private void Start()
+    private void Awake()
     {
         playerHand = FindObjectOfType<CardHand>();
     }
