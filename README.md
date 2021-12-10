@@ -4,9 +4,9 @@
 An asymetric card game where the player tries to survive for as many rounds as possible against an enemy that creates new monster cards each round.
 The player has two types of cards which they can draw:
 
-`Hero cards`- Which the player can place on their area of the board. These function as the player's health and determine the type of action cards that can be drawn.
+`Hero cards`- Which the player can place on their area of the board. These function as the player's health and determine the type of action cards that can be drawn and played.
 
-`Action cards`- These are the main ways the player can damage enemies with. Each suite funcitons differently:
+`Action cards`- These are the main ways the player can damage enemies with. You can only play as many action cards as you have heroes with a matching suite on the field. Each suite funcitons differently:
 
 Clubs- deal raw damage.
 
