@@ -370,7 +370,7 @@ TextMesh:
 
     c'
   m_OffsetZ: 0
-  m_CharacterSize: 0.15
+  m_CharacterSize: 0.13
   m_LineSpacing: 0.7
   m_Anchor: 1
   m_Alignment: 1
@@ -754,7 +754,7 @@ TextMesh:
   m_GameObject: {fileID: 6264678542769839730}
   m_Text: C
   m_OffsetZ: 0
-  m_CharacterSize: 0.2
+  m_CharacterSize: 0.18
   m_LineSpacing: 1
   m_Anchor: 4
   m_Alignment: 1

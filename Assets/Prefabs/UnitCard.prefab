@@ -142,7 +142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6264678541576811838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.44, y: 3.37, z: 0}
+  m_LocalPosition: {x: -1.8, y: 4.425, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6264678542572695837}
@@ -197,20 +197,12 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6264678541576811838}
-  m_Text: 'l
-
-    e
-
-    r
-
-    i
-
-    c'
+  m_Text: ragon
   m_OffsetZ: 0
   m_CharacterSize: 0.15
   m_LineSpacing: 0.7
-  m_Anchor: 1
-  m_Alignment: 1
+  m_Anchor: 0
+  m_Alignment: 0
   m_TabSize: 4
   m_FontSize: 0
   m_FontStyle: 0
@@ -486,7 +478,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e7f8b62075f9a34aa0750e1e4e3f84b, type: 2}
+  - {fileID: 2100000, guid: a21dab66f2975dd4aaabf3f765c48bdb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -589,7 +581,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6264678542769839730}
-  m_Text: C
+  m_Text: D
   m_OffsetZ: 0
   m_CharacterSize: 0.2
   m_LineSpacing: 1
@@ -684,6 +676,7 @@ MonoBehaviour:
   RestName: {fileID: 6264678541576811832}
   HealthText: {fileID: 6264678542574302390}
   FrontImage: {fileID: 7201045891008194480}
+  suiteIcons: []
   DamageText: {fileID: 2684743448701082833}
 --- !u!65 &6131151827328420807
 BoxCollider:
