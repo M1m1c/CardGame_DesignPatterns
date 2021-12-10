@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AvilableCards: {fileID: 11400000, guid: 53f4511d890a4064cb0c9cabf053f990, type: 2}
-  deckSize: 40
 --- !u!1 &4992542351772105655
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +105,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e600916dd2d0d004ca12f7daab3fdc66, type: 2}
+  - {fileID: 2100000, guid: 0aed797c0f13a9d44a5fb09523416779, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
